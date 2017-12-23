@@ -1,0 +1,8 @@
+# Compilation files.
+gtest/
+build/
+*.out
+local.mk
+
+# OS and editor files.
+.vscode/
