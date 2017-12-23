@@ -1,0 +1,6 @@
+BasedOnStyle: Google
+AlignAfterOpenBracket: AlwaysBreak
+BinPackArguments: false
+BinPackParameters: false
+AlignTrailingComments: false
+ColumnLimit: 100
