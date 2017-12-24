@@ -28,6 +28,20 @@ TEST(VectorSerializationTest, TestFewElements) {
   EXPECT_THAT(output, testing::ElementsAre(3, -5, 150));
 }
 
+TEST(VectorSerializationTest, TestVectorOfVector) {
+  std::vector<std::vector<int>> input;
+  input.push_back(std::vector<int>({4, -88}));
+  input.push_back(std::vector<int>({0, }));
+  std::stringstream ss;
+  hps::serialize(input, ss);
+  ss.seekg(0, ss.beg);
+  std::vector<std::vector<int>> output;
+  hps::parse(output, ss);
+  EXPECT_EQ(output.size(), 2);
+  EXPECT_THAT(output[0], testing::ElementsAre(4, -88));
+  EXPECT_THAT(output[1], testing::ElementsAre(0));
+}
+
 TEST(VectorSerializationSpeedTest, TestManyElements) {
   std::vector<int> input;
   const int n_elems = 1 << 22;
