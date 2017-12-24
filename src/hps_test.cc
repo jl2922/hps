@@ -31,21 +31,23 @@ class CustomType {
   friend hps::Serializer<CustomType>;
 };
 
+namespace hps {
 template <>
-class hps::Serializer<CustomType> {
+class Serializer<CustomType> {
  public:
   static void serialize(const CustomType& obj, std::ostream& stream) {
-    hps::serialize(obj.num, stream);
-    hps::serialize(obj.vec, stream);
-    hps::serialize(obj.str, stream);
+    Serializer<int>::serialize(obj.num, stream);
+    Serializer<std::vector<double>>::serialize(obj.vec, stream);
+    Serializer<std::string>::serialize(obj.str, stream);
   }
 
   static void parse(CustomType& obj, std::istream& stream) {
-    obj.num = hps::parse<int>(stream);
-    obj.vec = hps::parse<std::vector<double>>(stream);
-    obj.str = hps::parse<std::string>(stream);
+    Serializer<int>::parse(obj.num, stream);
+    Serializer<std::vector<double>>::parse(obj.vec, stream);
+    Serializer<std::string>::parse(obj.str, stream);
   }
 };
+}  // namespace hps
 
 TEST(HpsTest, SerializeCustomType) {
   CustomType input;
