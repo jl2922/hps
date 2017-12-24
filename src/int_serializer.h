@@ -1,7 +1,6 @@
 #ifndef HPS_INT_SERIALIZER_H_
 #define HPS_INT_SERIALIZER_H_
 
-#include <cassert>
 #include <iostream>
 #include <type_traits>
 #include "uint_serializer.h"
