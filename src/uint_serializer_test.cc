@@ -1,5 +1,4 @@
 #include "uint_serializer.h"
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <limits>
@@ -9,7 +8,8 @@ TEST(UintSerializerTest, TestZero) {
   std::stringstream ss;
   hps::serialize(input, ss);
   unsigned int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 
@@ -18,7 +18,8 @@ TEST(UintSerializerTest, TestSmallUint) {
   std::stringstream ss;
   hps::serialize(input, ss);
   unsigned int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 
@@ -27,8 +28,24 @@ TEST(UintSerializerTest, TestLargeUint) {
   std::stringstream ss;
   hps::serialize(input, ss);
   unsigned int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
+}
+
+TEST(UintSerializerTest, TestTwoUints) {
+  const unsigned int input1 = 27;
+  const unsigned int input2 = 300;
+  std::stringstream ss;
+  hps::serialize(input1, ss);
+  hps::serialize(input2, ss);
+  unsigned int output1;
+  unsigned int output2;
+  ss.seekg(0, ss.beg);
+  hps::parse(output1, ss);
+  hps::parse(output2, ss);
+  EXPECT_EQ(input1, output1);
+  EXPECT_EQ(input2, output2);
 }
 
 TEST(UintSerializerTest, TestMaxUint) {
@@ -36,7 +53,8 @@ TEST(UintSerializerTest, TestMaxUint) {
   std::stringstream ss;
   hps::serialize(input, ss);
   unsigned int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 

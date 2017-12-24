@@ -37,19 +37,23 @@ typename std::enable_if<std::is_unsigned<T>::value, void>::type serialize(
 
 template <class T>
 typename std::enable_if<std::is_unsigned<T>::value, void>::type parse(
-    T* num_ptr, std::istream& stream) {
-  if (num_ptr == nullptr) num_ptr = new T();
-  auto& num = *num_ptr;
+    T& num, std::istream& stream) {
   num = 0;
   const int buf_size = sizeof(num) + 2;
   char buf[buf_size];
   int pos = 0;
-  stream.read(buf, sizeof(num) + 2);
+  std::streampos stream_pos = stream.tellg();
+  stream.read(buf, buf_size);
   while (pos < buf_size) {
     num |= (buf[pos] & 0x7fu) << (7 * pos);
     if ((buf[pos] & 0x80u) == 0) break;
     pos++;
   }
+  stream_pos += pos + 1;
+
+  if (stream.fail()) stream.clear();
+
+  stream.seekg(stream_pos);
 }
 
 }  // namespace hps
