@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "serializer.h"
+#include "../serializer.h"
 #include "uint_serializer.h"
 
 namespace hps {
