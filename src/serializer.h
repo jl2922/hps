@@ -12,17 +12,21 @@ template <class T, class Enable = void>
 class Serializer {
  public:
   static void serialize(const T& t, std::ostream& stream) {
-    (void)t;
+    (void)t;  // Avoid warnings.
     (void)stream;
-    const std::string type_name = typeid(T).name();
-    throw std::logic_error("serialize not implemented for type " + type_name);
+    default_handler();
   }
 
   static void parse(T& t, std::istream& stream) {
     (void)t;
     (void)stream;
+    default_handler();
+  }
+
+ private:
+  static void default_handler() {
     const std::string type_name = typeid(T).name();
-    throw std::logic_error("parse not implemented for type " + type_name);
+    throw std::logic_error("Serializer not found for type " + type_name);
   }
 };
 

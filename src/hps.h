@@ -1,18 +1,10 @@
+#ifndef HPS_H_
+#define HPS_H_
+
 #include <iostream>
 #include <sstream>
-#include "basic_types/float_serializer.h"
-#include "basic_types/int_serializer.h"
-#include "basic_types/string_serializer.h"
-#include "basic_types/uint_serializer.h"
-#include "containers/array_serializer.h"
-#include "containers/deque_serializer.h"
-#include "containers/list_serializer.h"
-#include "containers/map_serializer.h"
-#include "containers/pair_serializer.h"
-#include "containers/set_serializer.h"
-#include "containers/unordered_map_serializer.h"
-#include "containers/unordered_set_serializer.h"
-#include "containers/vector_serializer.h"
+#include "basic_types/basic_types.h"
+#include "containers/containers.h"
 #include "serializer.h"
 
 namespace hps {
@@ -61,3 +53,5 @@ T parse_from_string(const std::string& str) {
 }
 
 }  // namespace hps
+
+#endif
