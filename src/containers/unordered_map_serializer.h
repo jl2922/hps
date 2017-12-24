@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <utility>
 #include "../basic_types/uint_serializer.h"
 #include "../serializer.h"
 
@@ -29,7 +30,7 @@ class Serializer<std::unordered_map<K, V>> {
     for (size_t i = 0; i < n_elems; i++) {
       Serializer<K>::parse(key, stream);
       Serializer<V>::parse(value, stream);
-      container[key] = value;
+      container[std::move(key)] = std::move(value);
     }
   }
 };

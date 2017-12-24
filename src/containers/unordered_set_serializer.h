@@ -26,7 +26,7 @@ class Serializer<std::unordered_set<T>> {
     T elem;
     for (size_t i = 0; i < n_elems; i++) {
       Serializer<T>::parse(elem, stream);
-      container.insert(elem);
+      container.insert(std::move(elem));
     }
   }
 };
