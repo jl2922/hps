@@ -1,18 +1,30 @@
 #ifndef HPS_SERIALIZER_H_
 #define HPS_SERIALIZER_H_
 
-#include "int_serializer.h"
-#include "uint_serializer.h"
-#include "vector_serialization.h"
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <typeinfo>
 
 namespace hps {
 
-template <class T>
-T parse(std::istream& stream) {
-  T t;
-  parse(t, stream);
-  return t;
-}
+template <class T, class Enable = void>
+class Serializer {
+ public:
+  static void serialize(const T& t, std::ostream& stream) {
+    (void)t;
+    (void)stream;
+    const std::string type_name = typeid(T).name();
+    throw std::logic_error("serialize not implemented for type " + type_name);
+  }
+
+  static void parse(T& t, std::istream& stream) {
+    (void)t;
+    (void)stream;
+    const std::string type_name = typeid(T).name();
+    throw std::logic_error("parse not implemented for type " + type_name);
+  }
+};
 
 }  // namespace hps
 
