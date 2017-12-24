@@ -1,5 +1,4 @@
 #include "int_serializer.h"
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <limits>
@@ -9,7 +8,8 @@ TEST(IntSerializerTest, TestZero) {
   std::stringstream ss;
   hps::serialize(input, ss);
   int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 
@@ -18,7 +18,8 @@ TEST(IntSerializerTest, TestSmallPositiveInt) {
   std::stringstream ss;
   hps::serialize(input, ss);
   int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 
@@ -27,7 +28,8 @@ TEST(IntSerializerTest, TestSmallNegativeInt) {
   std::stringstream ss;
   hps::serialize(input, ss);
   int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 
@@ -36,7 +38,8 @@ TEST(IntSerializerTest, TestLargePositiveInt) {
   std::stringstream ss;
   hps::serialize(input, ss);
   int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 
@@ -45,7 +48,8 @@ TEST(IntSerializerTest, TestLargeNegativeInt) {
   std::stringstream ss;
   hps::serialize(input, ss);
   int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 
@@ -54,7 +58,8 @@ TEST(IntSerializerTest, TestMaxInt) {
   std::stringstream ss;
   hps::serialize(input, ss);
   int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 
@@ -63,7 +68,8 @@ TEST(IntSerializerTest, TestMinInt) {
   std::stringstream ss;
   hps::serialize(input, ss);
   int output;
-  hps::parse(&output, ss);
+  ss.seekg(0, ss.beg);
+  hps::parse(output, ss);
   EXPECT_EQ(input, output);
 }
 

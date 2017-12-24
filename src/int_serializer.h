@@ -20,11 +20,10 @@ typename std::enable_if<std::is_signed<T>::value, void>::type serialize(
 
 template <class T>
 typename std::enable_if<std::is_signed<T>::value, void>::type parse(
-    T* num_ptr, std::istream& stream) {
+    T& num, std::istream& stream) {
   unsigned long long zigzaged_num;
-  parse(&zigzaged_num, stream);
-  *num_ptr = -(zigzaged_num & 1);
-  *num_ptr ^= zigzaged_num >> 1;
+  parse(zigzaged_num, stream);
+  num = (-(zigzaged_num & 1)) ^ (zigzaged_num >> 1);
 }
 
 }  // namespace hps
