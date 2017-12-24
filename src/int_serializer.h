@@ -7,23 +7,25 @@
 
 namespace hps {
 
-// Serialize and parse unsigned integer types with base 127 zigzag encoding.
+// Serialize and parse with unsigned integer serializer through zigzag encoding.
 
 template <class T>
-typename std::enable_if<std::is_signed<T>::value, void>::type serialize(
-    const T& num, std::ostream& stream) {
-  const int n_bits = sizeof(num) * 8;
-  unsigned long long zigzaged_num = (num << 1) ^ (num >> (n_bits - 1));
-  serialize(zigzaged_num, stream);
-}
+class Serializer<T, typename std::enable_if<std::is_signed<T>::value, void>::type> {
+ public:
+  static void serialize(const T& num, std::ostream& stream) {
+    const int n_bits = sizeof(num) * 8;
+    typedef typename std::make_unsigned<T>::type UT;
+    UT zigzaged_num = (num << 1) ^ (num >> (n_bits - 1));
+    Serializer<UT>::serialize(zigzaged_num, stream);
+  }
 
-template <class T>
-typename std::enable_if<std::is_signed<T>::value, void>::type parse(
-    T& num, std::istream& stream) {
-  unsigned long long zigzaged_num;
-  parse(zigzaged_num, stream);
-  num = (-(zigzaged_num & 1)) ^ (zigzaged_num >> 1);
-}
+  static void parse(T& num, std::istream& stream) {
+    typedef typename std::make_unsigned<T>::type UT;
+    UT zigzaged_num;
+    Serializer<UT>::parse(zigzaged_num, stream);
+    num = (-(zigzaged_num & 1)) ^ (zigzaged_num >> 1);
+  }
+};
 
 }  // namespace hps
 
