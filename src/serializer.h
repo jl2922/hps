@@ -5,21 +5,23 @@
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
+#include "input_buffer.h"
+#include "output_buffer.h"
 
 namespace hps {
 
 template <class T, class Enable = void>
 class Serializer {
  public:
-  static void serialize(const T& t, std::ostream& stream) {
+  static void serialize(const T& t, OutputBuffer& ob) {
     (void)t;  // Avoid warnings.
-    (void)stream;
+    (void)ob;
     default_handler();
   }
 
-  static void parse(T& t, std::istream& stream) {
+  static void parse(T& t, InputBuffer& ib) {
     (void)t;
-    (void)stream;
+    (void)ib;
     default_handler();
   }
 

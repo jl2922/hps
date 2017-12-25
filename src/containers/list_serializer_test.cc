@@ -7,10 +7,13 @@
 TEST(ListSerializerTest, TestNoElements) {
   std::list<int> input;
   std::stringstream ss;
-  hps::Serializer<std::list<int>>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<std::list<int>>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   std::list<int> output;
-  hps::Serializer<std::list<int>>::parse(output, ss);
+  hps::Serializer<std::list<int>>::parse(output, ib);
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
@@ -20,9 +23,12 @@ TEST(ListSerializerTest, TestFewElements) {
   input.push_back(0);
   input.push_back(-133);
   std::stringstream ss;
-  hps::Serializer<std::list<int>>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<std::list<int>>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   std::list<int> output;
-  hps::Serializer<std::list<int>>::parse(output, ss);
+  hps::Serializer<std::list<int>>::parse(output, ib);
   EXPECT_THAT(output, testing::ElementsAre(3, 0, -133));
 }

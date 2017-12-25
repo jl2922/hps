@@ -6,32 +6,39 @@
 TEST(FloatSerializerTest, TestZero) {
   const double input = 0;
   std::stringstream ss;
-  hps::Serializer<double>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<double>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   double output;
-  hps::Serializer<double>::parse(output, ss);
+  hps::Serializer<double>::parse(output, ib);
   EXPECT_EQ(input, output);
 }
 
 TEST(FloatSerializerTest, TestFloat) {
-  const float input = 3.2;
+  const float input = 3.3;
   std::stringstream ss;
-  hps::Serializer<float>::serialize(input, ss);
-  EXPECT_EQ(sizeof(input), ss.str().size());
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<float>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   float output;
-  hps::Serializer<float>::parse(output, ss);
+  hps::Serializer<float>::parse(output, ib);
   EXPECT_EQ(input, output);
 }
 
 TEST(FloatSerializerTest, TestDouble) {
-  const double input = -4.4;
+  const double input = 3.3;
   std::stringstream ss;
-  hps::Serializer<double>::serialize(input, ss);
-  EXPECT_EQ(sizeof(input), ss.str().size());
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<double>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   double output;
-  ss.seekg(0, ss.beg);
-  hps::Serializer<double>::parse(output, ss);
+  hps::Serializer<double>::parse(output, ib);
   EXPECT_EQ(input, output);
 }
 
@@ -39,13 +46,16 @@ TEST(FloatSerializerTest, TestTwoDoubles) {
   const double input1 = 3.2;
   const double input2 = -4.4;
   std::stringstream ss;
-  hps::Serializer<double>::serialize(input1, ss);
-  hps::Serializer<double>::serialize(input2, ss);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<double>::serialize(input1, ob);
+  hps::Serializer<double>::serialize(input2, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   double output1;
   double output2;
-  ss.seekg(0, ss.beg);
-  hps::Serializer<double>::parse(output1, ss);
-  hps::Serializer<double>::parse(output2, ss);
+  hps::Serializer<double>::parse(output1, ib);
+  hps::Serializer<double>::parse(output2, ib);
   EXPECT_EQ(input1, output1);
   EXPECT_EQ(input2, output2);
 }

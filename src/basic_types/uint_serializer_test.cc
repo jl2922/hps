@@ -6,54 +6,68 @@
 TEST(UintSerializerTest, TestZero) {
   const unsigned int input = 0;
   std::stringstream ss;
-  hps::Serializer<unsigned int>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<unsigned int>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   unsigned int output;
-  hps::Serializer<unsigned int>::parse(output, ss);
+  hps::Serializer<unsigned int>::parse(output, ib);
   EXPECT_EQ(input, output);
 }
 
 TEST(UintSerializerTest, TestSmallUint) {
-  const unsigned int input = 11;
+  const unsigned int input = 22;
   std::stringstream ss;
-  hps::Serializer<unsigned int>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<unsigned int>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   unsigned int output;
-  hps::Serializer<unsigned int>::parse(output, ss);
+  hps::Serializer<unsigned int>::parse(output, ib);
   EXPECT_EQ(input, output);
 }
 
 TEST(UintSerializerTest, TestLargeUint) {
   const unsigned int input = 3333;
   std::stringstream ss;
-  hps::Serializer<unsigned int>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<unsigned int>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   unsigned int output;
-  hps::Serializer<unsigned int>::parse(output, ss);
+  hps::Serializer<unsigned int>::parse(output, ib);
   EXPECT_EQ(input, output);
 }
 
-TEST(UintSerializerTest, TestTwoUints) {
-  const unsigned int input1 = 22;
-  const unsigned int input2 = 444;
+TEST(UintSerializerTest, TestFewUints) {
   std::stringstream ss;
-  hps::Serializer<unsigned int>::serialize(input1, ss);
-  hps::Serializer<unsigned int>::serialize(input2, ss);
-  ss.seekg(0, ss.beg);
-  unsigned int output1;
-  unsigned int output2;
-  hps::Serializer<unsigned int>::parse(output1, ss);
-  hps::Serializer<unsigned int>::parse(output2, ss);
-  EXPECT_EQ(input1, output1);
-  EXPECT_EQ(input2, output2);
+  hps::OutputBuffer ob(ss);
+  const size_t N = 10;
+  for (size_t i = 0; i < N; i++) {
+    hps::Serializer<unsigned int>::serialize(i, ob);
+  }
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
+  for (size_t i = 0; i < N; i++) {
+    unsigned int output;
+    hps::Serializer<unsigned int>::parse(output, ib);
+    EXPECT_EQ(i, output);
+  }
 }
 
 TEST(UintSerializerTest, TestMaxUint) {
-  const unsigned int input = std::numeric_limits<unsigned int>::max();
+  const unsigned long long input = std::numeric_limits<unsigned long long>::max();
   std::stringstream ss;
-  hps::Serializer<unsigned int>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
-  unsigned int output;
-  hps::Serializer<unsigned int>::parse(output, ss);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<unsigned long long>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
+  unsigned long long output;
+  hps::Serializer<unsigned long long>::parse(output, ib);
   EXPECT_EQ(input, output);
 }

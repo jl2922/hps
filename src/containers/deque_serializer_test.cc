@@ -7,10 +7,13 @@
 TEST(DequeSerializerTest, TestNoElements) {
   std::deque<int> input;
   std::stringstream ss;
-  hps::Serializer<std::deque<int>>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<std::deque<int>>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   std::deque<int> output;
-  hps::Serializer<std::deque<int>>::parse(output, ss);
+  hps::Serializer<std::deque<int>>::parse(output, ib);
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
@@ -20,9 +23,12 @@ TEST(DequeSerializerTest, TestFewElements) {
   input.push_back(0);
   input.push_back(-133);
   std::stringstream ss;
-  hps::Serializer<std::deque<int>>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<std::deque<int>>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   std::deque<int> output;
-  hps::Serializer<std::deque<int>>::parse(output, ss);
+  hps::Serializer<std::deque<int>>::parse(output, ib);
   EXPECT_THAT(output, testing::ElementsAre(3, 0, -133));
 }

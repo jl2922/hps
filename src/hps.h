@@ -10,12 +10,15 @@
 namespace hps {
 template <class T>
 void serialize(const T& t, std::ostream& stream) {
-  Serializer<T>::serialize(t, stream);
+  OutputBuffer ob(stream);
+  Serializer<T>::serialize(t, ob);
+  ob.flush();
 }
 
 template <class T>
 void parse(T& t, std::istream& stream) {
-  Serializer<T>::parse(t, stream);
+  InputBuffer ib(stream);
+  Serializer<T>::parse(t, ib);
 }
 
 template <class T>
