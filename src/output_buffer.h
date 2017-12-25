@@ -25,6 +25,14 @@ class OutputBuffer {
     }
   }
 
+  void write_char(const char ch) {
+    if (pos == OUTPUT_BUFFER_SIZE) {
+      flush();
+    }
+    buffer[pos] = ch;
+    pos++;
+  }
+
   void flush() {
     stream->write(buffer, pos);
     pos = 0;

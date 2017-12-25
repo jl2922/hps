@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include "../basic_types/int_serializer.h"
+#include "../basic_types/string_serializer.h"
 
 TEST(VectorSerializerTest, TestNoElements) {
   std::vector<int> input;
@@ -50,7 +51,7 @@ TEST(VectorSerializerTest, TestVectorOfVector) {
   EXPECT_THAT(output[1], testing::ElementsAre(0));
 }
 
-TEST(VectorSerializerSpeedTest, TestManyElements) {
+TEST(VectorSerializerSpeedTest, TestManyIntElements) {
   std::vector<int> input;
   const int n_elems = 1 << 24;
   input.resize(n_elems);
@@ -65,6 +66,27 @@ TEST(VectorSerializerSpeedTest, TestManyElements) {
   hps::InputBuffer ib(ss);
   std::vector<int> output;
   hps::Serializer<std::vector<int>>::parse(output, ib);
+  EXPECT_EQ(input.size(), output.size());
+  for (int i = 0; i < 10; i++) {
+    EXPECT_EQ(input[i], output[i]);
+  }
+}
+
+TEST(VectorSerializerSpeedTest, TestManyStringElements) {
+  std::vector<std::string> input;
+  const int n_elems = 1 << 22;
+  input.resize(n_elems);
+  for (int i = 0; i < n_elems; i++) {
+    input[i] = "fadczioupekljaiou";
+  }
+  std::stringstream ss;
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<std::vector<std::string>>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
+  std::vector<std::string> output;
+  hps::Serializer<std::vector<std::string>>::parse(output, ib);
   EXPECT_EQ(input.size(), output.size());
   for (int i = 0; i < 10; i++) {
     EXPECT_EQ(input[i], output[i]);
