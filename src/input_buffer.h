@@ -8,6 +8,7 @@
 namespace hps {
 
 constexpr size_t INPUT_BUFFER_SIZE = 1 << 17;
+constexpr size_t INPUT_BUF_LIMIT = 1 << 14;
 
 class InputBuffer {
  public:
@@ -18,12 +19,17 @@ class InputBuffer {
   }
 
   void read(char* content, size_t length) {
-    while (pos + length > INPUT_BUFFER_SIZE) {
+    if (pos + length > INPUT_BUFFER_SIZE) {
       const size_t n_avail = INPUT_BUFFER_SIZE - pos;
       read_core(content, n_avail);
-      next();
       length -= n_avail;
       content += n_avail;
+      if (length > INPUT_BUF_LIMIT) {
+        stream->read(content, length);
+        next();
+        return;
+      }
+      next();
     }
     read_core(content, length);
   }
