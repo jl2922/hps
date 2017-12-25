@@ -13,13 +13,13 @@ namespace hps {
 template <class T>
 class Serializer<T, typename std::enable_if<std::is_unsigned<T>::value, void>::type> {
  public:
-  static void serialize(const T& num, std::ostream& stream) {
+  static void serialize(const T& num, OutputBuffer& ob) {
     const int buf_size = sizeof(num) + 2;
     char buf[buf_size];
 
     if (num == 0) {
       buf[0] = 0;
-      stream.write(buf, 1);
+      ob.write(buf, 1);
       return;
     }
 
@@ -34,27 +34,27 @@ class Serializer<T, typename std::enable_if<std::is_unsigned<T>::value, void>::t
       pos++;
     }
     assert(num_copy == 0);
-    stream.write(buf, pos);
+    ob.write(buf, pos);
   }
 
-  static void parse(T& num, std::istream& stream) {
+  static void parse(T& num, InputBuffer& ib) {
     num = 0;
     const int buf_size = sizeof(num) + 2;
     char buf[buf_size];
     int pos = 0;
-    std::streampos stream_pos = stream.tellg();
-    stream.read(buf, buf_size);
+    // std::streampos stream_pos = ib.tellg();
+    ib.read(buf, buf_size);
     while (pos < buf_size) {
       T chunk = buf[pos] & 0x7fu;
       num |= chunk << (7 * pos);
       if ((buf[pos] & 0x80u) == 0) break;
       pos++;
     }
-    stream_pos += pos + 1;
+    // stream_pos += pos + 1;
 
-    if (stream.fail()) stream.clear();
+    // if (ib.fail()) ib.clear();
 
-    stream.seekg(stream_pos);
+    ib.back(buf_size - pos - 1);
   }
 };
 

@@ -14,7 +14,10 @@ endif
 
 # Sources and intermediate objects.
 SRCS := $(shell find $(SRC_DIR) ! -name "*_test.cc" -name "*.cc")
-TESTS := $(shell find $(SRC_DIR) -name "*_test.cc")
+# TESTS := $(shell find $(SRC_DIR) -name "*_test.cc")
+TESTS := $(SRC_DIR)/basic_types/float_serializer_test.cc \
+	$(SRC_DIR)/basic_types/int_serializer_test.cc \
+	$(SRC_DIR)/basic_types/uint_serializer_test.cc 
 HEADERS := $(shell find $(SRC_DIR) -name "*.h")
 OBJS := $(SRCS:$(SRC_DIR)/%.cc=$(BUILD_DIR)/%.o)
 TEST_OBJS := $(TESTS:$(SRC_DIR)/%.cc=$(BUILD_DIR)/%.o)
