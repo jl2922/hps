@@ -37,7 +37,7 @@ class Serializer<T, typename std::enable_if<std::is_unsigned<T>::value, void>::t
     char ch;
     do {
       ch = ib.read_char();
-      num |= (ch & FILTER_127) << n_shifts;
+      num |= (static_cast<T>(ch & FILTER_127)) << n_shifts;
       n_shifts += 7;
     } while ((ch & FILTER_SIGN) != 0);
   }

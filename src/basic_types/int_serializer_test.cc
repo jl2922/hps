@@ -93,3 +93,16 @@ TEST(IntSerializerTest, TestMinLongLong) {
   hps::Serializer<long long>::parse(output, ib);
   EXPECT_EQ(input, output);
 }
+
+TEST(IntSerializerTest, TestLargeNegativeLongLong) {
+  const long long input = -7363025924956902506ll;
+  std::stringstream ss;
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<long long>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
+  long long output;
+  hps::Serializer<long long>::parse(output, ib);
+  EXPECT_EQ(input, output);
+}
