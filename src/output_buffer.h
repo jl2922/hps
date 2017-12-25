@@ -9,18 +9,23 @@
 namespace hps {
 
 constexpr size_t OUTPUT_BUFFER_SIZE = 1 << 17;
+constexpr size_t OUTPUT_BUF_LIMIT = 1 << 14;
 
 class OutputBuffer {
  public:
   OutputBuffer(std::ostream& stream) : stream(&stream) { pos = 0; }
 
   void write(const char* content, size_t length) {
-    while (pos + length > OUTPUT_BUFFER_SIZE) {
+    if (pos + length > OUTPUT_BUFFER_SIZE) {
       const size_t n_avail = OUTPUT_BUFFER_SIZE - pos;
       write_core(content, n_avail);
-      flush();
       length -= n_avail;
       content += n_avail;
+      flush();
+      if (length > OUTPUT_BUF_LIMIT) {
+        stream->write(content, length);
+        return;
+      }
     }
     write_core(content, length);
   }
