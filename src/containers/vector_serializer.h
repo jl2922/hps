@@ -2,6 +2,7 @@
 #define HPS_VECTOR_SERIALIZER_H_
 
 #include <iostream>
+#include <type_traits>
 #include <vector>
 #include "../basic_types/uint_serializer.h"
 #include "../serializer.h"
