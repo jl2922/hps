@@ -8,7 +8,7 @@
 
 namespace hps {
 
-constexpr size_t OUTPUT_BUFFER_SIZE = 4096;
+constexpr size_t OUTPUT_BUFFER_SIZE = 1 << 15;
 
 class OutputBuffer {
  public:
@@ -23,6 +23,14 @@ class OutputBuffer {
     } else {
       write_core(content, length);
     }
+  }
+
+  void write_char(const char ch) {
+    if (pos == OUTPUT_BUFFER_SIZE) {
+      flush();
+    }
+    buffer[pos] = ch;
+    pos++;
   }
 
   void flush() {
