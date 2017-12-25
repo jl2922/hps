@@ -11,17 +11,17 @@ namespace hps {
 template <>
 class Serializer<std::string> {
  public:
-  static void serialize(const std::string& str, std::ostream& stream) {
+  static void serialize(const std::string& str, OutputBuffer& ob) {
     const size_t n_bytes = str.size();
-    Serializer<size_t>::serialize(n_bytes, stream);
-    stream.write(str.c_str(), n_bytes);
+    Serializer<size_t>::serialize(n_bytes, ob);
+    ob.write(str.c_str(), n_bytes);
   }
 
-  static void parse(std::string& str, std::istream& stream) {
+  static void parse(std::string& str, InputBuffer& ib) {
     size_t n_bytes;
-    Serializer<size_t>::parse(n_bytes, stream);
+    Serializer<size_t>::parse(n_bytes, ib);
     char* buf = new char[n_bytes];
-    stream.read(buf, n_bytes);
+    ib.read(buf, n_bytes);
     str.assign(buf, n_bytes);
   }
 };

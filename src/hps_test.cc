@@ -35,16 +35,16 @@ namespace hps {
 template <>
 class Serializer<CustomType> {
  public:
-  static void serialize(const CustomType& obj, std::ostream& stream) {
-    Serializer<int>::serialize(obj.num, stream);
-    Serializer<std::vector<double>>::serialize(obj.vec, stream);
-    Serializer<std::string>::serialize(obj.str, stream);
+  static void serialize(const CustomType& obj, OutputBuffer& ob) {
+    Serializer<int>::serialize(obj.num, ob);
+    Serializer<std::vector<double>>::serialize(obj.vec, ob);
+    Serializer<std::string>::serialize(obj.str, ob);
   }
 
-  static void parse(CustomType& obj, std::istream& stream) {
-    Serializer<int>::parse(obj.num, stream);
-    Serializer<std::vector<double>>::parse(obj.vec, stream);
-    Serializer<std::string>::parse(obj.str, stream);
+  static void parse(CustomType& obj, InputBuffer& ib) {
+    Serializer<int>::parse(obj.num, ib);
+    Serializer<std::vector<double>>::parse(obj.vec, ib);
+    Serializer<std::string>::parse(obj.str, ib);
   }
 };
 }  // namespace hps

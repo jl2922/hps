@@ -7,15 +7,15 @@
 
 namespace hps {
 
-constexpr size_t INPUT_BUFFER_SIZE = 16;
-constexpr size_t INPUT_MAX_BACK = 8;
+constexpr size_t INPUT_BUFFER_SIZE = 4096;
+constexpr size_t INPUT_MAX_BACK = 24;
 
 class InputBuffer {
  public:
   InputBuffer(std::istream& stream) : stream(&stream) {
     pos = 0;
     first = true;
-    stream.clear();  // Clear error bit.
+    if (stream.fail()) stream.clear();  // Clear error bit.
     stream.seekg(0, stream.beg);
   }
 
@@ -54,7 +54,7 @@ class InputBuffer {
   }
 
   void next_trunk() {
-    pos -= INPUT_BUFFER_SIZE - INPUT_MAX_BACK;
+    pos = INPUT_MAX_BACK;
     memcpy(buffer, buffer + (INPUT_BUFFER_SIZE - INPUT_MAX_BACK), INPUT_MAX_BACK);
     if (!stream->eof()) {
       stream->read(buffer + INPUT_MAX_BACK, INPUT_BUFFER_SIZE - INPUT_MAX_BACK);

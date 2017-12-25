@@ -8,10 +8,13 @@
 TEST(UnorderedMapSerializerTest, TestNoElements) {
   std::unordered_map<std::string, int> input;
   std::stringstream ss;
-  hps::Serializer<std::unordered_map<std::string, int>>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<std::unordered_map<std::string, int>>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   std::unordered_map<std::string, int> output;
-  hps::Serializer<std::unordered_map<std::string, int>>::parse(output, ss);
+  hps::Serializer<std::unordered_map<std::string, int>>::parse(output, ib);
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
@@ -21,10 +24,13 @@ TEST(UnorderedMapSerializerTest, TestFewElements) {
   input["bb"] = 0;
   input["cc"] = -333;
   std::stringstream ss;
-  hps::Serializer<std::unordered_map<std::string, int>>::serialize(input, ss);
-  ss.seekg(0, ss.beg);
+  hps::OutputBuffer ob(ss);
+  hps::Serializer<std::unordered_map<std::string, int>>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer ib(ss);
   std::unordered_map<std::string, int> output;
-  hps::Serializer<std::unordered_map<std::string, int>>::parse(output, ss);
+  hps::Serializer<std::unordered_map<std::string, int>>::parse(output, ib);
   EXPECT_EQ(output.size(), input.size());
   EXPECT_THAT(output, testing::Contains(testing::Key("aa")));
   EXPECT_THAT(output, testing::Contains(testing::Key("bb")));
