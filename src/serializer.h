@@ -13,15 +13,15 @@ namespace hps {
 template <class T, class Enable = void>
 class Serializer {
  public:
-  static void serialize(const T& t, OutputBuffer& buf) {
+  static void serialize(const T& t, OutputBuffer& ob) {
     (void)t;  // Avoid warnings.
-    (void)buf;
+    (void)ob;
     default_handler();
   }
 
-  static void parse(T& t, InputBuffer& buf) {
+  static void parse(T& t, InputBuffer& ib) {
     (void)t;
-    (void)buf;
+    (void)ib;
     default_handler();
   }
 

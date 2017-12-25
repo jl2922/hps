@@ -1,5 +1,5 @@
-#ifndef HPS_OUTPUT_STREAM_H_
-#define HPS_OUTPUT_STREAM_H_
+#ifndef HPS_OUTPUT_BUFFER_H_
+#define HPS_OUTPUT_BUFFER_H_
 
 #include <cstring>
 #include <iostream>

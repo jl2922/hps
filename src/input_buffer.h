@@ -1,5 +1,5 @@
-#ifndef HPS_INPUT_STREAM_H_
-#define HPS_INPUT_STREAM_H_
+#ifndef HPS_INPUT_BUFFER_H_
+#define HPS_INPUT_BUFFER_H_
 
 #include <cassert>
 #include <cstring>
