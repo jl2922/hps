@@ -8,7 +8,7 @@
 
 namespace hps {
 
-constexpr size_t OUTPUT_BUFFER_SIZE = 4096;
+constexpr size_t OUTPUT_BUFFER_SIZE = 1 << 15;
 
 class OutputBuffer {
  public:

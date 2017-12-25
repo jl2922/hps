@@ -53,7 +53,7 @@ TEST(VectorSerializerTest, TestVectorOfVector) {
 
 TEST(VectorSerializerSpeedTest, TestManyIntElements) {
   std::vector<int> input;
-  const int n_elems = 1 << 24;
+  const int n_elems = 1 << 25;
   input.resize(n_elems);
   for (int i = 0; i < n_elems; i++) {
     input[i] = i;
@@ -74,7 +74,7 @@ TEST(VectorSerializerSpeedTest, TestManyIntElements) {
 
 TEST(VectorSerializerSpeedTest, TestManyStringElements) {
   std::vector<std::string> input;
-  const int n_elems = 1 << 22;
+  const int n_elems = 1 << 23;
   input.resize(n_elems);
   for (int i = 0; i < n_elems; i++) {
     input[i] = "fadczioupekljaiou";

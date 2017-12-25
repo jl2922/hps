@@ -7,7 +7,7 @@
 
 namespace hps {
 
-constexpr size_t INPUT_BUFFER_SIZE = 4096;
+constexpr size_t INPUT_BUFFER_SIZE = 1 << 15;
 
 class InputBuffer {
  public:
