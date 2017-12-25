@@ -17,15 +17,15 @@ class InputBuffer {
     stream.read(buffer, INPUT_BUFFER_SIZE);
   }
 
-  void read(char* content, const size_t length) {
-    if (length + pos >= INPUT_BUFFER_SIZE) {
+  void read(char* content, size_t length) {
+    while (pos + length > INPUT_BUFFER_SIZE) {
       const size_t n_avail = INPUT_BUFFER_SIZE - pos;
       read_core(content, n_avail);
       next();
-      read(content + n_avail, length - n_avail);
-    } else {
-      read_core(content, length);
+      length -= n_avail;
+      content += n_avail;
     }
+    read_core(content, length);
   }
 
   char read_char() {

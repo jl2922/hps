@@ -14,15 +14,15 @@ class OutputBuffer {
  public:
   OutputBuffer(std::ostream& stream) : stream(&stream) { pos = 0; }
 
-  void write(const char* content, const size_t length) {
-    if (pos + length > OUTPUT_BUFFER_SIZE) {
+  void write(const char* content, size_t length) {
+    while (pos + length > OUTPUT_BUFFER_SIZE) {
       const size_t n_avail = OUTPUT_BUFFER_SIZE - pos;
       write_core(content, n_avail);
       flush();
-      write(content + n_avail, length - n_avail);
-    } else {
-      write_core(content, length);
+      length -= n_avail;
+      content += n_avail;
     }
+    write_core(content, length);
   }
 
   void write_char(const char ch) {
