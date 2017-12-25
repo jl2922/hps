@@ -37,7 +37,7 @@ class Serializer<std::string> {
   }
 
  private:
-  constexpr static size_t PARSE_BUFFER_SIZE = 1 << 8;
+  constexpr static size_t PARSE_BUFFER_SIZE = 1 << 10;
 };
 
 }  // namespace hps
