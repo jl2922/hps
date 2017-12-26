@@ -8,7 +8,7 @@
 
 namespace hps {
 
-constexpr size_t STREAM_OUTPUT_BUFFER_SIZE = 1 << 17;
+constexpr size_t STREAM_OUTPUT_BUFFER_SIZE = 1 << 16;
 
 template <>
 class OutputBuffer<Stream> {
@@ -16,12 +16,16 @@ class OutputBuffer<Stream> {
   OutputBuffer(std::ostream& stream) : stream(&stream) { pos = 0; }
 
   void write(const char* content, size_t length) {
-    while (pos + length > STREAM_OUTPUT_BUFFER_SIZE) {
+    if (pos + length > STREAM_OUTPUT_BUFFER_SIZE) {
       const size_t n_avail = STREAM_OUTPUT_BUFFER_SIZE - pos;
       write_core(content, n_avail);
       length -= n_avail;
       content += n_avail;
       flush();
+      if (length > STREAM_OUTPUT_BUFFER_SIZE) {
+        stream->write(content, length);
+        return;
+      }
     }
     write_core(content, length);
   }

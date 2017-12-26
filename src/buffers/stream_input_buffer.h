@@ -8,7 +8,7 @@
 
 namespace hps {
 
-constexpr size_t STREAM_INPUT_BUFFER_SIZE = 1 << 17;
+constexpr size_t STREAM_INPUT_BUFFER_SIZE = 1 << 16;
 
 template <>
 class InputBuffer<Stream> {
@@ -19,11 +19,16 @@ class InputBuffer<Stream> {
   }
 
   void read(char* content, size_t length) {
-    while (pos + length > STREAM_INPUT_BUFFER_SIZE) {
+    if (pos + length > STREAM_INPUT_BUFFER_SIZE) {
       const size_t n_avail = STREAM_INPUT_BUFFER_SIZE - pos;
       read_core(content, n_avail);
       length -= n_avail;
       content += n_avail;
+      if (length > STREAM_INPUT_BUFFER_SIZE) {
+        stream->read(content, length);
+        load();
+        return;
+      }
       load();
     }
     read_core(content, length);

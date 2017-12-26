@@ -6,19 +6,7 @@ TEST(HpsTest, SerializeToAndParseFromStream) {
   const int input = 22;
   std::stringstream ss;
   hps::serialize_to_stream(input, ss);
-
   const int output = hps::parse_from_stream<int>(ss);
-  EXPECT_EQ(input, output);
-}
-
-TEST(HpsSpeedTest, SerializeVectorsToAndFromStream) {
-  const std::vector<double> input(1 << 11, 3.3);
-  std::vector<double> output;
-  std::stringstream ss;
-  for (size_t i = 0; i < 1 << 18; i++) {
-    hps::serialize_to_stream(input, ss);
-    hps::parse_from_stream(output, ss);
-  }
   EXPECT_EQ(input, output);
 }
 
@@ -27,6 +15,39 @@ TEST(HpsTest, SerializeToAndParseFromString) {
   std::string str = hps::serialize_to_string(input);
   const double output = hps::parse_from_string<double>(str);
   EXPECT_EQ(input, output);
+}
+
+TEST(HpsSpeedTest, LargeIntVectorToFromString) {
+  std::vector<int> input;
+  const int n_elems = 1 << 25;
+  input.resize(n_elems);
+  for (int i = 0; i < n_elems; i++) input[i] = i;
+  const std::string str = hps::serialize_to_string(input);
+  // std::vector<int> output = hps::parse_from_string<std::vector<int>>(str);
+  // EXPECT_EQ(input.size(), output.size());
+  // for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
+}
+
+TEST(HpsSpeedTest, LargeDoubleVectorToFromString) {
+  std::vector<double> input;
+  const int n_elems = 1 << 25;
+  input.resize(n_elems);
+  for (int i = 0; i < n_elems; i++) input[i] = i;
+  const std::string str = hps::serialize_to_string(input);
+  std::vector<double> output = hps::parse_from_string<std::vector<double>>(str);
+  EXPECT_EQ(input.size(), output.size());
+  for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
+}
+
+TEST(HpsSpeedTest, LargeStringVectorToFromString) {
+  std::vector<std::string> input;
+  const int n_elems = 1 << 23;
+  input.resize(n_elems);
+  for (int i = 0; i < n_elems; i++) input[i] = "fadczioupekljaiou";
+  const std::string str = hps::serialize_to_string(input);
+  std::vector<std::string> output = hps::parse_from_string<std::vector<std::string>>(str);
+  EXPECT_EQ(input.size(), output.size());
+  for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
 TEST(HpsSpeedTest, SerializeVectorsToAndFromString) {

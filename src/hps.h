@@ -32,6 +32,7 @@ template <class T>
 void serialize_to_string(const T& t, std::string& str) {
   OutputBuffer<std::string> ob(str);
   Serializer<T, std::string>::serialize(t, ob);
+  ob.flush();
 }
 
 template <class T>

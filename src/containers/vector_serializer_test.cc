@@ -54,9 +54,7 @@ TEST(VectorSerializerSpeedTest, TestManyIntElements) {
   std::vector<int> input;
   const int n_elems = 1 << 25;
   input.resize(n_elems);
-  for (int i = 0; i < n_elems; i++) {
-    input[i] = i;
-  }
+  for (int i = 0; i < n_elems; i++) input[i] = i;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
   hps::Serializer<std::vector<int>, hps::Stream>::serialize(input, ob);
@@ -66,18 +64,14 @@ TEST(VectorSerializerSpeedTest, TestManyIntElements) {
   std::vector<int> output;
   hps::Serializer<std::vector<int>, hps::Stream>::parse(output, ib);
   EXPECT_EQ(input.size(), output.size());
-  for (int i = 0; i < 10; i++) {
-    EXPECT_EQ(input[i], output[i]);
-  }
+  for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
 TEST(VectorSerializerSpeedTest, TestManyDoubleElements) {
   std::vector<double> input;
   const int n_elems = 1 << 25;
   input.resize(n_elems);
-  for (int i = 0; i < n_elems; i++) {
-    input[i] = i;
-  }
+  for (int i = 0; i < n_elems; i++) input[i] = i;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
   hps::Serializer<std::vector<double>, hps::Stream>::serialize(input, ob);
@@ -87,18 +81,14 @@ TEST(VectorSerializerSpeedTest, TestManyDoubleElements) {
   std::vector<double> output;
   hps::Serializer<std::vector<double>, hps::Stream>::parse(output, ib);
   EXPECT_EQ(input.size(), output.size());
-  for (int i = 0; i < 10; i++) {
-    EXPECT_EQ(input[i], output[i]);
-  }
+  for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
 TEST(VectorSerializerSpeedTest, TestManyStringElements) {
   std::vector<std::string> input;
   const int n_elems = 1 << 23;
   input.resize(n_elems);
-  for (int i = 0; i < n_elems; i++) {
-    input[i] = "fadczioupekljaiou";
-  }
+  for (int i = 0; i < n_elems; i++) input[i] = "fadczioupekljaiou";
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
   hps::Serializer<std::vector<std::string>, hps::Stream>::serialize(input, ob);
@@ -108,7 +98,5 @@ TEST(VectorSerializerSpeedTest, TestManyStringElements) {
   std::vector<std::string> output;
   hps::Serializer<std::vector<std::string>, hps::Stream>::parse(output, ib);
   EXPECT_EQ(input.size(), output.size());
-  for (int i = 0; i < 10; i++) {
-    EXPECT_EQ(input[i], output[i]);
-  }
+  for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
