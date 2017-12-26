@@ -23,9 +23,9 @@ TEST(HpsSpeedTest, LargeIntVectorToFromString) {
   input.resize(n_elems);
   for (int i = 0; i < n_elems; i++) input[i] = i;
   const std::string str = hps::serialize_to_string(input);
-  // std::vector<int> output = hps::parse_from_string<std::vector<int>>(str);
-  // EXPECT_EQ(input.size(), output.size());
-  // for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
+  std::vector<int> output = hps::parse_from_string<std::vector<int>>(str);
+  EXPECT_EQ(input.size(), output.size());
+  for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
 TEST(HpsSpeedTest, LargeDoubleVectorToFromString) {
