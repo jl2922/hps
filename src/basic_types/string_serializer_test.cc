@@ -3,7 +3,7 @@
 #include <iostream>
 #include <limits>
 
-TEST(StringSerializerTest, TestShortString) {
+TEST(StringSerializerTest, ShortString) {
   const std::string input = "test";
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -16,7 +16,7 @@ TEST(StringSerializerTest, TestShortString) {
   EXPECT_EQ(input, output);
 }
 
-TEST(StringSerializerTest, TestEmptyString) {
+TEST(StringSerializerTest, EmptyString) {
   const std::string input = "";
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);

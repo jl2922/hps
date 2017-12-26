@@ -4,7 +4,7 @@
 #include <list>
 #include "../basic_types/int_serializer.h"
 
-TEST(ListSerializerTest, TestNoElements) {
+TEST(ListSerializerTest, NoElements) {
   std::list<int> input;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -17,7 +17,7 @@ TEST(ListSerializerTest, TestNoElements) {
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
-TEST(ListSerializerTest, TestFewElements) {
+TEST(ListSerializerTest, FewElements) {
   std::list<int> input;
   input.push_back(3);
   input.push_back(0);

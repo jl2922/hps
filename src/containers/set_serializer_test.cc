@@ -4,7 +4,7 @@
 #include <set>
 #include "../basic_types/int_serializer.h"
 
-TEST(SetSerializerTest, TestNoElements) {
+TEST(SetSerializerTest, NoElements) {
   std::set<int> input;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -17,7 +17,7 @@ TEST(SetSerializerTest, TestNoElements) {
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
-TEST(SetSerializerTest, TestFewElements) {
+TEST(SetSerializerTest, FewElements) {
   std::set<int> input;
   input.insert(3);
   input.insert(0);

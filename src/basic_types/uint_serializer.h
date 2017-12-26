@@ -22,7 +22,7 @@ class Serializer<T, B, typename std::enable_if<std::is_unsigned<T>::value, void>
     T num_copy = num;
 
     while (num_copy > 0) {
-      char chunk = num_copy & FILTER_127;
+      char chunk = static_cast<char>(num_copy) & FILTER_127;
       num_copy >>= 7;
       if (num_copy > 0) {
         chunk |= FILTER_SIGN;

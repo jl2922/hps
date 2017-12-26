@@ -2,9 +2,16 @@
 CXX := g++
 CXX_WARNING_OPTIONS := -Wall -Wextra
 CXXFLAGS := -std=c++11 -O3 $(CXX_WARNING_OPTIONS)
+LDLIBS := -pthread -lboost_serialization -lprotobuf -lpthread
 SRC_DIR := src
 BUILD_DIR := build
 TEST_EXE := test.out
+
+# Libraries.
+BOOST_DIR := $(TOOLS_DIR)/boost
+PROTOBUF_DIR := $(TOOLS_DIR)/protobuf
+CXXFLAGS := $(CXXFLAGS) -isystem $(BOOST_DIR)/include -isystem $(PROTOBUF_DIR)/include
+LDLIBS := -L $(BOOST_DIR)/lib -L $(PROTOBUF_DIR)/lib $(LDLIBS)
 
 # Load Makefile.config if exists.
 LOCAL_MAKEFILE := local.mk
@@ -13,6 +20,8 @@ ifneq ($(wildcard $(LOCAL_MAKEFILE)),)
 endif
 
 # Sources and intermediate objects.
+PROTO_SRC := $(SRC_DIR)/benchmarks/data.proto
+PROTO_COMPILED := $(SRC_DIR)/benchmarks/data.pb.h $(SRC_DIR)/benchmarks/data.pb.cc
 SRCS := $(shell find $(SRC_DIR) ! -name "*_test.cc" -name "*.cc")
 TESTS := $(shell find $(SRC_DIR) -name "*_test.cc")
 HEADERS := $(shell find $(SRC_DIR) -name "*.h")
@@ -29,16 +38,25 @@ TEST_MAIN_OBJ := $(BUILD_DIR)/gtest_main.o
 TEST_CXXFLAGS := $(CXXFLAGS) -isystem $(GTEST_DIR)/include -isystem $(GMOCK_DIR)/include -pthread
 TEST_LIB := $(BUILD_DIR)/libgtest.a
 
-.PHONY: all test clean
+.PHONY: all test benchmark all_tests test_exe proto clean
 
 all:
-	make test
+	$(MAKE) test
 
-test: $(TEST_EXE)
-	./$(TEST_EXE) --gtest_filter=-*SpeedTest.*
+test: test_exe
+	./$(TEST_EXE) --gtest_filter=-*LargeTest.*
 
-all_tests: $(TEST_EXE)
+benchmarks: test_exe
+	./$(TEST_EXE) --gtest_filter=*BenchmarkLargeTest.*
+
+all_tests: test_exe
 	./$(TEST_EXE)
+
+test_exe: proto
+	$(MAKE) $(TEST_EXE)
+
+proto:
+	$(MAKE) $(PROTO_COMPILED)
 
 clean:
 	rm -rf $(BUILD_DIR)
@@ -64,3 +82,6 @@ $(TEST_OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(HEADERS)
 
 $(TEST_MAIN_OBJ): $(TEST_MAIN_SRC)
 	mkdir -p $(@D) && $(CXX) -I$(GTEST_DIR) -I$(GMOCK_DIR) $(TEST_CXXFLAGS) -c $< -o $@
+
+$(PROTO_COMPILED): $(PROTO_SRC)
+	protoc -I=$(SRC_DIR)/benchmarks --cpp_out=$(SRC_DIR)/benchmarks $<

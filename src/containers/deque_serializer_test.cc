@@ -4,7 +4,7 @@
 #include <deque>
 #include "../basic_types/int_serializer.h"
 
-TEST(DequeSerializerTest, TestNoElements) {
+TEST(DequeSerializerTest, NoElements) {
   std::deque<int> input;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -17,7 +17,7 @@ TEST(DequeSerializerTest, TestNoElements) {
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
-TEST(DequeSerializerTest, TestFewElements) {
+TEST(DequeSerializerTest, FewElements) {
   std::deque<int> input;
   input.push_back(3);
   input.push_back(0);

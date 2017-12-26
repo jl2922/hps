@@ -3,7 +3,7 @@
 #include <iostream>
 #include <limits>
 
-TEST(IntSerializerTest, TestZero) {
+TEST(IntSerializerTest, Zero) {
   const int input = 0;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -16,7 +16,7 @@ TEST(IntSerializerTest, TestZero) {
   EXPECT_EQ(input, output);
 }
 
-TEST(IntSerializerTest, TestSmallPositiveInt) {
+TEST(IntSerializerTest, SmallPositiveInt) {
   const int input = 22;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -29,7 +29,7 @@ TEST(IntSerializerTest, TestSmallPositiveInt) {
   EXPECT_EQ(input, output);
 }
 
-TEST(IntSerializerTest, TestSmallNegativeInt) {
+TEST(IntSerializerTest, SmallNegativeInt) {
   const int input = -33;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -42,7 +42,7 @@ TEST(IntSerializerTest, TestSmallNegativeInt) {
   EXPECT_EQ(input, output);
 }
 
-TEST(IntSerializerTest, TestMaxInt) {
+TEST(IntSerializerTest, MaxInt) {
   const int input = std::numeric_limits<int>::max();
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -55,7 +55,7 @@ TEST(IntSerializerTest, TestMaxInt) {
   EXPECT_EQ(input, output);
 }
 
-TEST(IntSerializerTest, TestMinInt) {
+TEST(IntSerializerTest, MinInt) {
   const int input = std::numeric_limits<int>::min();
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -68,7 +68,7 @@ TEST(IntSerializerTest, TestMinInt) {
   EXPECT_EQ(input, output);
 }
 
-TEST(IntSerializerTest, TestMaxLongLong) {
+TEST(IntSerializerTest, MaxLongLong) {
   const long long input = std::numeric_limits<long long>::max();
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -81,7 +81,7 @@ TEST(IntSerializerTest, TestMaxLongLong) {
   EXPECT_EQ(input, output);
 }
 
-TEST(IntSerializerTest, TestMinLongLong) {
+TEST(IntSerializerTest, MinLongLong) {
   const long long input = std::numeric_limits<long long>::min();
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -94,7 +94,7 @@ TEST(IntSerializerTest, TestMinLongLong) {
   EXPECT_EQ(input, output);
 }
 
-TEST(IntSerializerTest, TestLargeNegativeLongLong) {
+TEST(IntSerializerTest, LargeNegativeLongLong) {
   const long long input = -7363025924956902506ll;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);

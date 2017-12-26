@@ -8,7 +8,7 @@
 
 namespace hps {
 
-constexpr size_t STREAM_OUTPUT_BUFFER_SIZE = 1 << 16;
+constexpr size_t STREAM_OUTPUT_BUFFER_SIZE = 1 << 14;
 
 template <>
 class OutputBuffer<Stream> {

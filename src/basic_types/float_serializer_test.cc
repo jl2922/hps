@@ -3,7 +3,7 @@
 #include <iostream>
 #include <limits>
 
-TEST(FloatSerializerTest, TestZero) {
+TEST(FloatSerializerTest, Zero) {
   const double input = 0;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -16,7 +16,7 @@ TEST(FloatSerializerTest, TestZero) {
   EXPECT_EQ(input, output);
 }
 
-TEST(FloatSerializerTest, TestFloat) {
+TEST(FloatSerializerTest, Float) {
   const float input = 3.3;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -29,7 +29,7 @@ TEST(FloatSerializerTest, TestFloat) {
   EXPECT_EQ(input, output);
 }
 
-TEST(FloatSerializerTest, TestDouble) {
+TEST(FloatSerializerTest, Double) {
   const double input = 3.3;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -42,7 +42,7 @@ TEST(FloatSerializerTest, TestDouble) {
   EXPECT_EQ(input, output);
 }
 
-TEST(FloatSerializerTest, TestTwoDoubles) {
+TEST(FloatSerializerTest, TwoDoubles) {
   const double input1 = 3.2;
   const double input2 = -4.4;
   std::stringstream ss;

@@ -5,7 +5,7 @@
 #include "../basic_types/int_serializer.h"
 #include "../basic_types/string_serializer.h"
 
-TEST(MapSerializerTest, TestNoElements) {
+TEST(MapSerializerTest, NoElements) {
   std::map<std::string, int> input;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -18,7 +18,7 @@ TEST(MapSerializerTest, TestNoElements) {
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
-TEST(MapSerializerTest, TestFewElements) {
+TEST(MapSerializerTest, FewElements) {
   std::map<std::string, int> input;
   input["aa"] = 33;
   input["bb"] = 0;

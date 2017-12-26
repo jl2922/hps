@@ -4,7 +4,7 @@
 #include <vector>
 #include "../basic_types/basic_types.h"
 
-TEST(VectorSerializerTest, TestNoElements) {
+TEST(VectorSerializerTest, NoElements) {
   std::vector<int> input;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -17,7 +17,7 @@ TEST(VectorSerializerTest, TestNoElements) {
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
-TEST(VectorSerializerTest, TestFewElements) {
+TEST(VectorSerializerTest, FewElements) {
   std::vector<long long> input;
   input.push_back(3);
   input.push_back(0);
@@ -33,7 +33,7 @@ TEST(VectorSerializerTest, TestFewElements) {
   EXPECT_THAT(output, testing::ElementsAre(3, 0, -133));
 }
 
-TEST(VectorSerializerTest, TestVectorOfVector) {
+TEST(VectorSerializerTest, VectorOfVector) {
   std::vector<std::vector<int>> input;
   input.push_back(std::vector<int>({4, 44}));
   input.push_back(std::vector<int>({0}));
@@ -50,7 +50,7 @@ TEST(VectorSerializerTest, TestVectorOfVector) {
   EXPECT_THAT(output[1], testing::ElementsAre(0));
 }
 
-TEST(VectorSerializerSpeedTest, TestManyIntElements) {
+TEST(VectorSerializerLargeTest, ManyIntElements) {
   std::vector<int> input;
   const int n_elems = 1 << 25;
   input.resize(n_elems);
@@ -67,7 +67,7 @@ TEST(VectorSerializerSpeedTest, TestManyIntElements) {
   for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
-TEST(VectorSerializerSpeedTest, TestManyDoubleElements) {
+TEST(VectorSerializerLargeTest, ManyDoubleElements) {
   std::vector<double> input;
   const int n_elems = 1 << 25;
   input.resize(n_elems);
@@ -84,7 +84,7 @@ TEST(VectorSerializerSpeedTest, TestManyDoubleElements) {
   for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
-TEST(VectorSerializerSpeedTest, TestManyStringElements) {
+TEST(VectorSerializerLargeTest, ManyStringElements) {
   std::vector<std::string> input;
   const int n_elems = 1 << 23;
   input.resize(n_elems);

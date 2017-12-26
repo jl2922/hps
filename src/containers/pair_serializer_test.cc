@@ -4,7 +4,7 @@
 #include "../basic_types/int_serializer.h"
 #include "../basic_types/string_serializer.h"
 
-TEST(PairSerializerTest, TestNormalPair) {
+TEST(PairSerializerTest, SinglePair) {
   std::pair<std::string, int> input("aa", 3.5);
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);

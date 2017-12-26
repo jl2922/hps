@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include "../basic_types/int_serializer.h"
 
-TEST(UnorderedSetSerializerTest, TestNoElements) {
+TEST(UnorderedSetSerializerTest, NoElements) {
   std::unordered_set<int> input;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -17,7 +17,7 @@ TEST(UnorderedSetSerializerTest, TestNoElements) {
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
-TEST(UnorderedSetSerializerTest, TestFewElements) {
+TEST(UnorderedSetSerializerTest, FewElements) {
   std::unordered_set<int> input;
   input.insert(3);
   input.insert(0);

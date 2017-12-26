@@ -3,7 +3,7 @@
 #include <iostream>
 #include <limits>
 
-TEST(UintSerializerTest, TestZero) {
+TEST(UintSerializerTest, Zero) {
   const unsigned int input = 0;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -16,7 +16,7 @@ TEST(UintSerializerTest, TestZero) {
   EXPECT_EQ(input, output);
 }
 
-TEST(UintSerializerTest, TestSmallUint) {
+TEST(UintSerializerTest, SmallUint) {
   const unsigned int input = 22;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -29,7 +29,7 @@ TEST(UintSerializerTest, TestSmallUint) {
   EXPECT_EQ(input, output);
 }
 
-TEST(UintSerializerTest, TestLargeUint) {
+TEST(UintSerializerTest, LargeUint) {
   const unsigned int input = 3333;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -42,7 +42,7 @@ TEST(UintSerializerTest, TestLargeUint) {
   EXPECT_EQ(input, output);
 }
 
-TEST(UintSerializerTest, TestFewUints) {
+TEST(UintSerializerTest, FewUints) {
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
   const size_t N = 10;
@@ -59,7 +59,7 @@ TEST(UintSerializerTest, TestFewUints) {
   }
 }
 
-TEST(UintSerializerTest, TestMaxUint) {
+TEST(UintSerializerTest, MaxUint) {
   const unsigned long long input = std::numeric_limits<unsigned long long>::max();
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);

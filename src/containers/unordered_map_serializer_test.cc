@@ -5,7 +5,7 @@
 #include "../basic_types/int_serializer.h"
 #include "../basic_types/string_serializer.h"
 
-TEST(UnorderedMapSerializerTest, TestNoElements) {
+TEST(UnorderedMapSerializerTest, NoElements) {
   std::unordered_map<std::string, int> input;
   std::stringstream ss;
   hps::OutputBuffer<hps::Stream> ob(ss);
@@ -18,7 +18,7 @@ TEST(UnorderedMapSerializerTest, TestNoElements) {
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
-TEST(UnorderedMapSerializerTest, TestFewElements) {
+TEST(UnorderedMapSerializerTest, FewElements) {
   std::unordered_map<std::string, int> input;
   input["aa"] = 33;
   input["bb"] = 0;
