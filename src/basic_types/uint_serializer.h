@@ -10,10 +10,10 @@ namespace hps {
 
 // Serialize and parse unsigned integer types with base 127 encoding.
 
-template <class T>
-class Serializer<T, typename std::enable_if<std::is_unsigned<T>::value, void>::type> {
+template <class T, class B>
+class Serializer<T, B, typename std::enable_if<std::is_unsigned<T>::value, void>::type> {
  public:
-  static void serialize(const T& num, OutputBuffer& ob) {
+  static void serialize(const T& num, OutputBuffer<B>& ob) {
     if (num == 0) {
       ob.write_char(0);
       return;
@@ -31,7 +31,7 @@ class Serializer<T, typename std::enable_if<std::is_unsigned<T>::value, void>::t
     }
   }
 
-  static void parse(T& num, InputBuffer& ib) {
+  static void parse(T& num, InputBuffer<B>& ib) {
     num = 0;
     size_t n_shifts = 0;
     char ch;

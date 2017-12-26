@@ -9,26 +9,26 @@
 
 namespace hps {
 
-template <class K, class V>
-class Serializer<std::map<K, V>> {
+template <class K, class V, class B>
+class Serializer<std::map<K, V>, B> {
  public:
-  static void serialize(const std::map<K, V>& container, OutputBuffer& ob) {
-    Serializer<size_t>::serialize(container.size(), ob);
+  static void serialize(const std::map<K, V>& container, OutputBuffer<B>& ob) {
+    Serializer<size_t, B>::serialize(container.size(), ob);
     for (const auto& elem : container) {
-      Serializer<K>::serialize(elem.first, ob);
-      Serializer<V>::serialize(elem.second, ob);
+      Serializer<K, B>::serialize(elem.first, ob);
+      Serializer<V, B>::serialize(elem.second, ob);
     }
   }
 
-  static void parse(std::map<K, V>& container, InputBuffer& ib) {
+  static void parse(std::map<K, V>& container, InputBuffer<B>& ib) {
     size_t n_elems;
-    Serializer<size_t>::parse(n_elems, ib);
+    Serializer<size_t, B>::parse(n_elems, ib);
     container.clear();
     K key;
     V value;
     for (size_t i = 0; i < n_elems; i++) {
-      Serializer<K>::parse(key, ib);
-      Serializer<V>::parse(value, ib);
+      Serializer<K, B>::parse(key, ib);
+      Serializer<V, B>::parse(value, ib);
       container[std::move(key)] = std::move(value);
     }
   }

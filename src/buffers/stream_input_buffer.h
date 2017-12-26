@@ -1,36 +1,42 @@
-#ifndef HPS_INPUT_BUFFER_H_
-#define HPS_INPUT_BUFFER_H_
+#ifndef HPS_STREAM_INPUT_BUFFER_H_
+#define HPS_STREAM_INPUT_BUFFER_H_
 
-#include <cassert>
 #include <cstring>
 #include <iostream>
+#include "input_buffer.h"
+#include "stream.h"
 
 namespace hps {
 
-constexpr size_t INPUT_BUFFER_SIZE = 1 << 17;
+constexpr size_t STREAM_INPUT_BUFFER_SIZE = 1 << 16;
 
-class InputBuffer {
+template <>
+class InputBuffer<Stream> {
  public:
   InputBuffer(std::istream& stream) : stream(&stream) {
-    pos = 0;
     stream.seekg(0, stream.beg);
-    stream.read(buffer, INPUT_BUFFER_SIZE);
+    load();
   }
 
   void read(char* content, size_t length) {
-    while (pos + length > INPUT_BUFFER_SIZE) {
-      const size_t n_avail = INPUT_BUFFER_SIZE - pos;
+    if (pos + length > STREAM_INPUT_BUFFER_SIZE) {
+      const size_t n_avail = STREAM_INPUT_BUFFER_SIZE - pos;
       read_core(content, n_avail);
-      next();
       length -= n_avail;
       content += n_avail;
+      if (length > STREAM_INPUT_BUFFER_SIZE) {
+        stream->read(content, length);
+        load();
+        return;
+      }
+      load();
     }
     read_core(content, length);
   }
 
   char read_char() {
-    if (pos == INPUT_BUFFER_SIZE) {
-      next();
+    if (pos == STREAM_INPUT_BUFFER_SIZE) {
+      load();
     }
     const char ch = buffer[pos];
     pos++;
@@ -40,7 +46,7 @@ class InputBuffer {
  private:
   std::istream* const stream;
 
-  char buffer[INPUT_BUFFER_SIZE];
+  char buffer[STREAM_INPUT_BUFFER_SIZE];
 
   size_t pos;
 
@@ -49,8 +55,8 @@ class InputBuffer {
     pos += length;
   }
 
-  void next() {
-    stream->read(buffer, INPUT_BUFFER_SIZE);
+  void load() {
+    stream->read(buffer, STREAM_INPUT_BUFFER_SIZE);
     pos = 0;
   }
 };

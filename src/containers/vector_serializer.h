@@ -9,43 +9,45 @@
 
 namespace hps {
 
-template <class T>
+template <class T, class B>
 class Serializer<
     std::vector<T>,
+    B,
     typename std::enable_if<!std::is_floating_point<T>::value, void>::type> {
  public:
-  static void serialize(const std::vector<T>& container, OutputBuffer& ob) {
-    Serializer<size_t>::serialize(container.size(), ob);
+  static void serialize(const std::vector<T>& container, OutputBuffer<B>& ob) {
+    Serializer<size_t, B>::serialize(container.size(), ob);
     for (const T& elem : container) {
-      Serializer<T>::serialize(elem, ob);
+      Serializer<T, B>::serialize(elem, ob);
     }
   }
 
-  static void parse(std::vector<T>& container, InputBuffer& ib) {
+  static void parse(std::vector<T>& container, InputBuffer<B>& ib) {
     size_t n_elems;
-    Serializer<size_t>::parse(n_elems, ib);
+    Serializer<size_t, B>::parse(n_elems, ib);
     container.resize(n_elems);
     for (size_t i = 0; i < n_elems; i++) {
-      Serializer<T>::parse(container[i], ib);
+      Serializer<T, B>::parse(container[i], ib);
     }
   }
 };
 
-template <class T>
+template <class T, class B>
 class Serializer<
     std::vector<T>,
+    B,
     typename std::enable_if<std::is_floating_point<T>::value, void>::type> {
  public:
-  static void serialize(const std::vector<T>& container, OutputBuffer& ob) {
+  static void serialize(const std::vector<T>& container, OutputBuffer<B>& ob) {
     const size_t n_elems = container.size();
-    Serializer<size_t>::serialize(n_elems, ob);
+    Serializer<size_t, B>::serialize(n_elems, ob);
     const char* num_ptr = reinterpret_cast<const char*>(container.data());
     ob.write(num_ptr, n_elems * sizeof(T));
   }
 
-  static void parse(std::vector<T>& container, InputBuffer& ib) {
+  static void parse(std::vector<T>& container, InputBuffer<B>& ib) {
     size_t n_elems;
-    Serializer<size_t>::parse(n_elems, ib);
+    Serializer<size_t, B>::parse(n_elems, ib);
     container.resize(n_elems);
     char* num_ptr = reinterpret_cast<char*>(container.data());
     ib.read(num_ptr, n_elems * sizeof(T));

@@ -8,18 +8,18 @@
 
 namespace hps {
 
-template <>
-class Serializer<std::string> {
+template <class B>
+class Serializer<std::string, B> {
  public:
-  static void serialize(const std::string& str, OutputBuffer& ob) {
+  static void serialize(const std::string& str, OutputBuffer<B>& ob) {
     const size_t n_bytes = str.size();
-    Serializer<size_t>::serialize(n_bytes, ob);
+    Serializer<size_t, B>::serialize(n_bytes, ob);
     ob.write(str.c_str(), n_bytes);
   }
 
-  static void parse(std::string& str, InputBuffer& ib) {
+  static void parse(std::string& str, InputBuffer<B>& ib) {
     size_t n_bytes;
-    Serializer<size_t>::parse(n_bytes, ib);
+    Serializer<size_t, B>::parse(n_bytes, ib);
     char buf[PARSE_BUFFER_SIZE];
     str.clear();
     str.reserve(n_bytes);
