@@ -7,13 +7,13 @@
 TEST(SetSerializerTest, TestNoElements) {
   std::set<int> input;
   std::stringstream ss;
-  hps::OutputBuffer ob(ss);
-  hps::Serializer<std::set<int>>::serialize(input, ob);
+  hps::OutputBuffer<hps::Stream> ob(ss);
+  hps::Serializer<std::set<int>, hps::Stream>::serialize(input, ob);
   ob.flush();
 
-  hps::InputBuffer ib(ss);
+  hps::InputBuffer<hps::Stream> ib(ss);
   std::set<int> output;
-  hps::Serializer<std::set<int>>::parse(output, ib);
+  hps::Serializer<std::set<int>, hps::Stream>::parse(output, ib);
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
@@ -23,12 +23,12 @@ TEST(SetSerializerTest, TestFewElements) {
   input.insert(0);
   input.insert(-133);
   std::stringstream ss;
-  hps::OutputBuffer ob(ss);
-  hps::Serializer<std::set<int>>::serialize(input, ob);
+  hps::OutputBuffer<hps::Stream> ob(ss);
+  hps::Serializer<std::set<int>, hps::Stream>::serialize(input, ob);
   ob.flush();
 
-  hps::InputBuffer ib(ss);
+  hps::InputBuffer<hps::Stream> ib(ss);
   std::set<int> output;
-  hps::Serializer<std::set<int>>::parse(output, ib);
+  hps::Serializer<std::set<int>, hps::Stream>::parse(output, ib);
   EXPECT_THAT(output, testing::UnorderedElementsAre(3, 0, -133));
 }

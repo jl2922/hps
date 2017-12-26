@@ -7,13 +7,13 @@
 TEST(PairSerializerTest, TestNormalPair) {
   std::pair<std::string, int> input("aa", 3.5);
   std::stringstream ss;
-  hps::OutputBuffer ob(ss);
-  hps::Serializer<std::pair<std::string, int>>::serialize(input, ob);
+  hps::OutputBuffer<hps::Stream> ob(ss);
+  hps::Serializer<std::pair<std::string, int>, hps::Stream>::serialize(input, ob);
   ob.flush();
 
-  hps::InputBuffer ib(ss);
+  hps::InputBuffer<hps::Stream> ib(ss);
   std::pair<std::string, int> output;
-  hps::Serializer<std::pair<std::string, int>>::parse(output, ib);
+  hps::Serializer<std::pair<std::string, int>, hps::Stream>::parse(output, ib);
   EXPECT_EQ(output.first, input.first);
   EXPECT_EQ(output.second, input.second);
 }

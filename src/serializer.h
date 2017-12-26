@@ -5,21 +5,20 @@
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
-#include "input_buffer.h"
-#include "output_buffer.h"
+#include "buffers/buffers.h"
 
 namespace hps {
 
-template <class T, class Enable = void>
+template <class T, class B, class Enable = void>
 class Serializer {
  public:
-  static void serialize(const T& t, OutputBuffer& ob) {
+  static void serialize(const T& t, OutputBuffer<B>& ob) {
     (void)t;  // Avoid warnings.
     (void)ob;
     default_handler();
   }
 
-  static void parse(T& t, InputBuffer& ib) {
+  static void parse(T& t, InputBuffer<B>& ib) {
     (void)t;
     (void)ib;
     default_handler();

@@ -6,25 +6,25 @@
 TEST(StringSerializerTest, TestShortString) {
   const std::string input = "test";
   std::stringstream ss;
-  hps::OutputBuffer ob(ss);
-  hps::Serializer<std::string>::serialize(input, ob);
+  hps::OutputBuffer<hps::Stream> ob(ss);
+  hps::Serializer<std::string, hps::Stream>::serialize(input, ob);
   ob.flush();
 
-  hps::InputBuffer ib(ss);
+  hps::InputBuffer<hps::Stream> ib(ss);
   std::string output;
-  hps::Serializer<std::string>::parse(output, ib);
+  hps::Serializer<std::string, hps::Stream>::parse(output, ib);
   EXPECT_EQ(input, output);
 }
 
 TEST(StringSerializerTest, TestEmptyString) {
   const std::string input = "";
   std::stringstream ss;
-  hps::OutputBuffer ob(ss);
-  hps::Serializer<std::string>::serialize(input, ob);
+  hps::OutputBuffer<hps::Stream> ob(ss);
+  hps::Serializer<std::string, hps::Stream>::serialize(input, ob);
   ob.flush();
 
-  hps::InputBuffer ib(ss);
+  hps::InputBuffer<hps::Stream> ib(ss);
   std::string output;
-  hps::Serializer<std::string>::parse(output, ib);
+  hps::Serializer<std::string, hps::Stream>::parse(output, ib);
   EXPECT_EQ(input, output);
 }

@@ -9,30 +9,29 @@
 
 namespace hps {
 template <class T>
-void serialize(const T& t, std::ostream& stream) {
-  OutputBuffer ob(stream);
-  Serializer<T>::serialize(t, ob);
+void serialize_to_stream(const T& t, std::ostream& stream) {
+  OutputBuffer<Stream> ob(stream);
+  Serializer<T, Stream>::serialize(t, ob);
   ob.flush();
 }
 
 template <class T>
-void parse(T& t, std::istream& stream) {
-  InputBuffer ib(stream);
-  Serializer<T>::parse(t, ib);
+void parse_from_stream(T& t, std::istream& stream) {
+  InputBuffer<Stream> ib(stream);
+  Serializer<T, Stream>::parse(t, ib);
 }
 
 template <class T>
-T parse(std::istream& stream) {
+T parse_from_stream(std::istream& stream) {
   T t;
-  parse<T>(t, stream);
+  parse_from_stream<T>(t, stream);
   return t;
 }
 
 template <class T>
 void serialize_to_string(const T& t, std::string& str) {
-  std::stringstream ss;
-  serialize(t, ss);
-  str = ss.str();
+  OutputBuffer<std::string> ob(str);
+  Serializer<T, std::string>::serialize(t, ob);
 }
 
 template <class T>
@@ -44,8 +43,8 @@ std::string serialize_to_string(const T& t) {
 
 template <class T>
 void parse_from_string(T& t, const std::string& str) {
-  std::stringstream ss(str);
-  parse(t, ss);
+  InputBuffer<std::string> ib(str);
+  Serializer<T, std::string>::parse(t, ib);
 }
 
 template <class T>
