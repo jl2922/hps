@@ -77,6 +77,8 @@ class CustomType {
 };
 
 namespace hps {
+
+// For static polymorphism.
 template <class B>
 class Serializer<CustomType, B> {
  public:
@@ -92,6 +94,7 @@ class Serializer<CustomType, B> {
     Serializer<std::string, B>::parse(obj.str, ib);
   }
 };
+
 }  // namespace hps
 
 TEST(HpsTest, SerializeCustomType) {
