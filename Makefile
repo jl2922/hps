@@ -13,7 +13,7 @@ PROTOBUF_DIR := $(TOOLS_DIR)/protobuf
 CAPNPROTO_DIR := $(TOOLS_DIR)/capnproto
 CXXFLAGS := $(CXXFLAGS) -isystem $(BOOST_DIR)/include \
     -isystem $(PROTOBUF_DIR)/include -isystem $(CAPNPROTO_DIR)/include
-LDLIBS := -L $(BOOST_DIR)/lib -L $(PROTOBUF_DIR)/lib $(LDLIBS)
+LDLIBS := -L $(BOOST_DIR)/lib -L $(PROTOBUF_DIR)/lib -L $(CAPNPROTO_DIR)/lib $(LDLIBS)
 
 # Load Makefile.config if exists.
 LOCAL_MAKEFILE := local.mk
