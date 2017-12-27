@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
-#include "buffers/buffers.h"
+#include "buffer/buffer.h"
 
 namespace hps {
 

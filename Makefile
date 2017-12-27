@@ -2,7 +2,7 @@
 CXX := g++
 CXX_WARNING_OPTIONS := -Wall -Wextra
 CXXFLAGS := -std=c++11 -O3 $(CXX_WARNING_OPTIONS)
-LDLIBS := -pthread -lboost_serialization -lprotobuf -lpthread
+LDLIBS := -pthread -lprotobuf -lcapnp -lkj -lboost_serialization -lpthread
 SRC_DIR := src
 BUILD_DIR := build
 TEST_EXE := test.out
@@ -10,7 +10,9 @@ TEST_EXE := test.out
 # Libraries.
 BOOST_DIR := $(TOOLS_DIR)/boost
 PROTOBUF_DIR := $(TOOLS_DIR)/protobuf
-CXXFLAGS := $(CXXFLAGS) -isystem $(BOOST_DIR)/include -isystem $(PROTOBUF_DIR)/include
+CAPNPROTO_DIR := $(TOOLS_DIR)/capnproto
+CXXFLAGS := $(CXXFLAGS) -isystem $(BOOST_DIR)/include \
+    -isystem $(PROTOBUF_DIR)/include -isystem $(CAPNPROTO_DIR)/include
 LDLIBS := -L $(BOOST_DIR)/lib -L $(PROTOBUF_DIR)/lib $(LDLIBS)
 
 # Load Makefile.config if exists.
@@ -20,8 +22,11 @@ ifneq ($(wildcard $(LOCAL_MAKEFILE)),)
 endif
 
 # Sources and intermediate objects.
-PROTO_SRC := $(SRC_DIR)/benchmarks/data.proto
-PROTO_COMPILED := $(SRC_DIR)/benchmarks/data.pb.h $(SRC_DIR)/benchmarks/data.pb.cc
+BENCHMARK_DIR := $(SRC_DIR)/benchmark
+PROTOBUF_SRC := $(BENCHMARK_DIR)/protobuf_benchmark.proto
+PROTOBUF_COMPILED := $(BENCHMARK_DIR)/protobuf_benchmark.pb.h $(BENCHMARK_DIR)/protobuf_benchmark.pb.cc
+CAPNPROTO_SRC := $(BENCHMARK_DIR)/capnproto_benchmark.capnp
+CAPNPROTO_COMPILED := $(BENCHMARK_DIR)/capnproto_benchmark.capnp.h $(BENCHMARK_DIR)/capnproto_benchmark.capnp.cc
 SRCS := $(shell find $(SRC_DIR) ! -name "*_test.cc" -name "*.cc")
 TESTS := $(shell find $(SRC_DIR) -name "*_test.cc")
 HEADERS := $(shell find $(SRC_DIR) -name "*.h")
@@ -38,7 +43,9 @@ TEST_MAIN_OBJ := $(BUILD_DIR)/gtest_main.o
 TEST_CXXFLAGS := $(CXXFLAGS) -isystem $(GTEST_DIR)/include -isystem $(GMOCK_DIR)/include -pthread
 TEST_LIB := $(BUILD_DIR)/libgtest.a
 
-.PHONY: all test benchmark all_tests test_exe proto clean
+.PHONY: all test benchmark all_tests test_exe protobuf capnproto clean
+
+.SUFFIXES:
 
 all:
 	$(MAKE) test
@@ -46,24 +53,27 @@ all:
 test: test_exe
 	./$(TEST_EXE) --gtest_filter=-*LargeTest.*
 
-benchmarks: test_exe
+benchmark: test_exe
 	./$(TEST_EXE) --gtest_filter=*BenchmarkLargeTest.*
 
 all_tests: test_exe
 	./$(TEST_EXE)
 
-test_exe: proto
+test_exe: protobuf capnproto
 	$(MAKE) $(TEST_EXE)
 
-proto:
-	$(MAKE) $(PROTO_COMPILED)
+protobuf:
+	$(MAKE) $(PROTOBUF_COMPILED)
+
+capnproto:
+	$(MAKE) $(CAPNPROTO_COMPILED)
 
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -f ./$(TEST_EXE)
 
-$(TEST_EXE): $(TEST_OBJS) $(OBJS) $(TEST_MAIN_OBJ) $(TEST_LIB)
-	$(CXX) $(CXXFLAGS) $(TEST_OBJS) $(OBJS) $(TEST_MAIN_OBJ) $(TEST_LIB) -o $(TEST_EXE) $(LDLIBS) -lpthread
+$(TEST_EXE): $(TEST_OBJS) $(OBJS) $(TEST_LIB)
+	$(CXX) $(TEST_CXXFLAGS) $(TEST_OBJS) $(OBJS) $(TEST_MAIN_SRC) $(TEST_LIB) -o $(TEST_EXE) $(LDLIBS)
 
 $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(HEADERS)
 	mkdir -p $(@D) && $(CXX) $(CXXFLAGS) -c $< -o $@
@@ -80,8 +90,8 @@ $(TEST_LIB): $(BUILD_DIR)/gtest-all.o $(BUILD_DIR)/gmock-all.o
 $(TEST_OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(HEADERS)
 	mkdir -p $(@D) && $(CXX) $(TEST_CXXFLAGS) -c $< -o $@
 
-$(TEST_MAIN_OBJ): $(TEST_MAIN_SRC)
-	mkdir -p $(@D) && $(CXX) -I$(GTEST_DIR) -I$(GMOCK_DIR) $(TEST_CXXFLAGS) -c $< -o $@
+$(PROTOBUF_COMPILED): $(PROTOBUF_SRC)
+	protoc -I=$(BENCHMARK_DIR) --cpp_out=$(BENCHMARK_DIR) $<
 
-$(PROTO_COMPILED): $(PROTO_SRC)
-	protoc -I=$(SRC_DIR)/benchmarks --cpp_out=$(SRC_DIR)/benchmarks $<
+$(CAPNPROTO_COMPILED): $(CAPNPROTO_SRC)
+	capnp compile -oc++ $< && mv $(BENCHMARK_DIR)/capnproto_benchmark.capnp.c++ $(BENCHMARK_DIR)/capnproto_benchmark.capnp.cc

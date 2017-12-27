@@ -3,6 +3,8 @@ gtest/
 build/
 *.out
 local.mk
+*.pb.*
+*_generated.h
 
 # OS and editor files.
 .vscode/
