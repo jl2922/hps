@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package protobuf_benchmark;
+
+message DoubleArray {
+  repeated double elems = 1;
+}
+
+message SparseMatrix {
+  repeated SparseMatrixRow rows = 1;
+}
+
+message SparseMatrixRow {
+  repeated uint64 cols = 1;
+  repeated double values = 2;
+}
+
+message Map {
+  map<string, double> entries = 1;
+}
