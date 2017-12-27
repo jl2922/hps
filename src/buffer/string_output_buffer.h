@@ -14,7 +14,7 @@ class OutputBuffer<std::string> {
   OutputBuffer(std::string& str) : str(&str) { pos = 0; }
 
   void write(const char* content, size_t length) {
-    if (pos + length >= STRING_OUTPUT_BUFFER_SIZE) {
+    if (pos + length > STRING_OUTPUT_BUFFER_SIZE) {
       const size_t n_avail = STRING_OUTPUT_BUFFER_SIZE - pos;
       write_core(content, n_avail);
       length -= n_avail;

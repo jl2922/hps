@@ -43,7 +43,7 @@ TEST(MapBenchmarkLargeTest, Protobuf) {
 
   auto finish_time = high_resolution_clock::now();
 
-  EXPECT_EQ(origin.entries_size(), parsed.entries_size());
+  EXPECT_EQ(origin.entries_size(), parsed.entries_size()); // Item by item comparison is too slow.
 
   auto construction_time = duration_cast<milliseconds>(constructed_time - start_time).count();
   auto serialization_time = duration_cast<milliseconds>(finish_time - constructed_time).count();

@@ -8,7 +8,7 @@
 
 namespace hps {
 
-constexpr size_t STREAM_INPUT_BUFFER_SIZE = 1 << 14;
+constexpr size_t STREAM_INPUT_BUFFER_SIZE = 1 << 16;
 
 template <>
 class InputBuffer<Stream> {
