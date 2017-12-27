@@ -2,7 +2,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-TEST(HpsTest, SerializeToAndParseFromStream) {
+TEST(HpsTest, ToAndFromStream) {
   const int input = 22;
   std::stringstream ss;
   hps::serialize_to_stream(input, ss);
@@ -10,14 +10,14 @@ TEST(HpsTest, SerializeToAndParseFromStream) {
   EXPECT_EQ(input, output);
 }
 
-TEST(HpsTest, SerializeToAndParseFromString) {
+TEST(HpsTest, ToAndFromString) {
   const double input = 1.1;
   std::string str = hps::serialize_to_string(input);
   const double output = hps::parse_from_string<double>(str);
   EXPECT_EQ(input, output);
 }
 
-TEST(HpsSpeedTest, LargeIntVectorToFromString) {
+TEST(HpsLargeTest, LargeIntVectorToAndFromString) {
   std::vector<int> input;
   const int n_elems = 1 << 25;
   input.resize(n_elems);
@@ -28,7 +28,7 @@ TEST(HpsSpeedTest, LargeIntVectorToFromString) {
   for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
-TEST(HpsSpeedTest, LargeDoubleVectorToFromString) {
+TEST(HpsLargeTest, LargeDoubleVectorToAndFromString) {
   std::vector<double> input;
   const int n_elems = 1 << 25;
   input.resize(n_elems);
@@ -39,7 +39,7 @@ TEST(HpsSpeedTest, LargeDoubleVectorToFromString) {
   for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
-TEST(HpsSpeedTest, LargeStringVectorToFromString) {
+TEST(HpsLargeTest, LargeStringVectorToAndFromString) {
   std::vector<std::string> input;
   const int n_elems = 1 << 23;
   input.resize(n_elems);
@@ -50,7 +50,7 @@ TEST(HpsSpeedTest, LargeStringVectorToFromString) {
   for (int i = 0; i < 10; i++) EXPECT_EQ(input[i], output[i]);
 }
 
-TEST(HpsSpeedTest, SerializeVectorsToAndFromString) {
+TEST(HpsLargeTest, RepeatedToAndFromString) {
   const std::vector<double> input(1 << 11, 3.3);
   std::vector<double> output;
   for (size_t i = 0; i < 1 << 18; i++) {
@@ -97,7 +97,7 @@ class Serializer<CustomType, B> {
 
 }  // namespace hps
 
-TEST(HpsTest, SerializeCustomType) {
+TEST(HpsTest, CustomType) {
   CustomType input;
   input.num = 3;
   input.vec.push_back(2.2);
@@ -110,7 +110,7 @@ TEST(HpsTest, SerializeCustomType) {
   EXPECT_EQ(output.get_str(), "aa");
 }
 
-TEST(HpsTest, SerializeCustomTypeVector) {
+TEST(HpsTest, CustomTypeVector) {
   std::vector<CustomType> input(1);
   input[0].num = 3;
   input[0].vec.push_back(2.2);

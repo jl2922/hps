@@ -3,8 +3,8 @@
 
 #include <iostream>
 #include <sstream>
-#include "basic_types/basic_types.h"
-#include "containers/containers.h"
+#include "basic_type/basic_type.h"
+#include "container/container.h"
 #include "serializer.h"
 
 namespace hps {

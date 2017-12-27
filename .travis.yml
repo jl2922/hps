@@ -5,10 +5,10 @@ matrix:
   include:
   - os: linux
     env:
-      - MATRIX_EVAL="CXX_COMPILER=g++"
+      - MATRIX_EVAL="CXX_COMPILER=g++ && BOOST_USE='using g++ ;'"
   - os: linux
     env:
-      - MATRIX_EVAL="CXX_COMPILER=clang++"
+      - MATRIX_EVAL="CXX_COMPILER=clang++ && BOOST_USE='using clang++ ;'"
   - os: linux
     addons:
       apt:
@@ -17,7 +17,7 @@ matrix:
         packages:
           - g++-5
     env:
-      - MATRIX_EVAL="CXX_COMPILER=g++-5"
+      - MATRIX_EVAL="CXX_COMPILER=g++-5 && BOOST_USE='using g++ : 5 ;'"
   - os: linux
     addons:
       apt:
@@ -26,7 +26,7 @@ matrix:
         packages:
           - g++-6
     env:
-      - MATRIX_EVAL="CXX_COMPILER=g++-6"
+      - MATRIX_EVAL="CXX_COMPILER=g++-6 && BOOST_USE='using g++ : 6 ;'"
   - os: linux
     addons:
       apt:
@@ -35,7 +35,7 @@ matrix:
         packages:
           - g++-7
     env:
-      - MATRIX_EVAL="CXX_COMPILER=g++-7"
+      - MATRIX_EVAL="CXX_COMPILER=g++-7 && BOOST_USE='using g++ : 7 ;'"
   - os: linux
     addons:
       apt:
@@ -44,7 +44,7 @@ matrix:
         packages:
           - clang-4.0
     env:
-      - MATRIX_EVAL="CXX_COMPILER=clang++-4.0"
+      - MATRIX_EVAL="CXX_COMPILER=clang++-4.0 && BOOST_USE='using clang++ : 4.0 ;'"
   - os: linux
     addons:
       apt:
@@ -53,12 +53,16 @@ matrix:
         packages:
           - clang-5.0
     env:
-      - MATRIX_EVAL="CXX_COMPILER=clang++-5.0"
+      - MATRIX_EVAL="CXX_COMPILER=clang++-5.0 && BOOST_USE='using clang++ : 5.0 ;'"
 before_install:
   - eval "${MATRIX_EVAL}"
   - pip install --user cpp-coveralls
-  - ./install-gtest.sh
   - echo "CXX := ${CXX_COMPILER}" > local.mk
-script: make all_tests -j
+script: bash ./ci.sh
 after_success:
   - coveralls --exclude gtest --exclude-pattern .*_test.cc --gcov-options '\-lp'
+cache:
+  directories:
+    - tools/protobuf
+    - tools/capnproto
+    - tools/boost
