@@ -1,0 +1,55 @@
+#!/bin/bash
+# Install Google Test.
+echo "Downloading Google Test"
+wget -O release-1.8.0.tar.gz https://github.com/google/googletest/archive/release-1.8.0.tar.gz
+tar xzf release-1.8.0.tar.gz
+rm release-1.8.0.tar.gz
+mv googletest-release-1.8.0 gtest
+echo "Completed"
+echo
+
+# Install or Load Protocol Buffers.
+if [ -f "$TOOLS_DIR/protobuf/bin/protoc" ]; then
+	echo "Found cached Protocol Buffers"
+else
+	echo "Downloading Protocol Buffers"
+  mkdir -p downloads
+  cd downloads
+	wget -O protobuf-cpp-3.5.1.tar.gz https://github.com/google/protobuf/releases/download/v3.5.1/protobuf-cpp-3.5.1.tar.gz
+	tar xzf protobuf-cpp-3.5.1.tar.gz
+	echo "Configuring and building Protocol Buffers"
+	cd protobuf-3.5.1
+  mkdir -p $TOOLS_DIR/protobuf
+	./configure --prefix=$TOOLS_DIR/protobuf CC=$C_COMPILER CXX=$CXX_COMPILER
+	make -j 8
+	make install
+	echo "Completed"
+	echo
+	cd ../../
+fi
+export PATH=$TOOLS_DIR/protobuf/bin:$PATH
+export LD_LIBRARY_PATH=$TOOLS_DIR/protobuf/lib:$LD_LIBRARY_PATH
+
+
+# Install or Load Boost.
+if [ -f "$TOOLS_DIR/boost/lib/libboost_serialization.so" ] ; then
+	echo "Found cached Boost"
+else
+	echo "Downloading Boost"
+  mkdir -p downloads
+  cd downloads
+	wget -O boost_1_66_0.tar.bz2 https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2
+	tar xjf boost_1_66_0.tar.bz2
+	echo "Configuring and building Boost"
+	cd boost_1_66_0
+  mkdir -p $TOOLS_DIR/boost
+  ./bootstrap.sh
+  echo 'libraries = --with-serialization ;' >> project-config.jam
+	echo $BOOST_USE >> project-config.jam
+	./b2 -j8 --prefix=$TOOLS_DIR/boost install
+	echo "Completed"
+	echo
+	cd ../../
+fi
+export PATH=$TOOLS_DIR/boost/bin:$PATH
+export LD_LIBRARY_PATH=$TOOLS_DIR/boost/lib:$LD_LIBRARY_PATH
