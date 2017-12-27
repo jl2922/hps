@@ -26,7 +26,9 @@ BENCHMARK_DIR := $(SRC_DIR)/benchmark
 PROTOBUF_SRC := $(BENCHMARK_DIR)/protobuf_benchmark.proto
 PROTOBUF_COMPILED := $(BENCHMARK_DIR)/protobuf_benchmark.pb.h $(BENCHMARK_DIR)/protobuf_benchmark.pb.cc
 CAPNPROTO_SRC := $(BENCHMARK_DIR)/capnproto_benchmark.capnp
-CAPNPROTO_COMPILED := $(BENCHMARK_DIR)/capnproto_benchmark.capnp.h $(BENCHMARK_DIR)/capnproto_benchmark.capnp.cc
+CAPNPROTO_COMPILED_H := $(BENCHMARK_DIR)/capnproto_benchmark.capnp.h
+CAPNPROTO_COMPILED_CC := $(BENCHMARK_DIR)/capnproto_benchmark.capnp.cc
+CAPNPROTO_COMPILED_CXX := $(BENCHMARK_DIR)/capnproto_benchmark.capnp.c++
 SRCS := $(shell find $(SRC_DIR) ! -name "*_test.cc" -name "*.cc")
 TESTS := $(shell find $(SRC_DIR) -name "*_test.cc")
 HEADERS := $(shell find $(SRC_DIR) -name "*.h")
@@ -43,30 +45,24 @@ TEST_MAIN_OBJ := $(BUILD_DIR)/gtest_main.o
 TEST_CXXFLAGS := $(CXXFLAGS) -isystem $(GTEST_DIR)/include -isystem $(GMOCK_DIR)/include -pthread
 TEST_LIB := $(BUILD_DIR)/libgtest.a
 
-.PHONY: all test benchmark all_tests test_exe protobuf capnproto clean
+.PHONY: all test test_benchmark test_all test_build clean
 
 .SUFFIXES:
 
 all:
 	$(MAKE) test
 
-test: test_exe
+test: test_build
 	./$(TEST_EXE) --gtest_filter=-*LargeTest.*
 
-benchmark: test_exe
+test_benchmark: test_build
 	./$(TEST_EXE) --gtest_filter=*BenchmarkLargeTest.*
 
-all_tests: test_exe
+test_all: test_build
 	./$(TEST_EXE)
 
-test_exe: protobuf capnproto
+test_build: $(PROTOBUF_COMPILED) $(CAPNPROTO_COMPILED_H) $(CAPNPROTO_COMPILED_CC)
 	$(MAKE) $(TEST_EXE)
-
-protobuf:
-	$(MAKE) $(PROTOBUF_COMPILED)
-
-capnproto:
-	$(MAKE) $(CAPNPROTO_COMPILED)
 
 clean:
 	rm -rf $(BUILD_DIR)
@@ -90,8 +86,11 @@ $(TEST_LIB): $(BUILD_DIR)/gtest-all.o $(BUILD_DIR)/gmock-all.o
 $(TEST_OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(HEADERS)
 	mkdir -p $(@D) && $(CXX) $(TEST_CXXFLAGS) -c $< -o $@
 
-$(PROTOBUF_COMPILED): $(PROTOBUF_SRC)
-	protoc -I=$(BENCHMARK_DIR) --cpp_out=$(BENCHMARK_DIR) $<
+%.pb.h %.pb.cc: %.proto
+	protoc -I=$(@D) --cpp_out=$(@D) $<
 
-$(CAPNPROTO_COMPILED): $(CAPNPROTO_SRC)
-	capnp compile -oc++ $< && mv $(BENCHMARK_DIR)/capnproto_benchmark.capnp.c++ $(BENCHMARK_DIR)/capnproto_benchmark.capnp.cc
+%.capnp.c++ %.capnp.h: %.capnp
+	capnp compile -oc++ $<
+
+%.capnp.cc: %.capnp.c++
+	cp $< $@

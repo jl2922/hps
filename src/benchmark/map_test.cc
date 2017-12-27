@@ -1,3 +1,5 @@
+#include <capnp/message.h>
+#include <capnp/serialize.h>
 #include <google/protobuf/util/message_differencer.h>
 #include <gtest/gtest.h>
 #include <boost/archive/binary_iarchive.hpp>
@@ -6,10 +8,10 @@
 #include <chrono>
 #include <iostream>
 #include "../hps.h"
-#include "protobuf_benchmark.pb.h"
 #include "capnproto_benchmark.capnp.h"
+#include "protobuf_benchmark.pb.h"
 
-constexpr static unsigned long long N_ENTRIES = 1 << 20;
+constexpr static unsigned long long N_ENTRIES = 1 << 21;
 
 TEST(MapBenchmarkLargeTest, Warmup) {
   std::unordered_map<std::string, double> origin;
@@ -41,9 +43,7 @@ TEST(MapBenchmarkLargeTest, Protobuf) {
 
   auto finish_time = high_resolution_clock::now();
 
-  // Checked for small runs.
-  // For large runs, the comparison is unbearably slow, hence commented out.
-  // EXPECT_TRUE(google::protobuf::util::MessageDifferencer::Equals(origin, parsed));
+  EXPECT_EQ(origin.entries_size(), parsed.entries_size());
 
   auto construction_time = duration_cast<milliseconds>(constructed_time - start_time).count();
   auto serialization_time = duration_cast<milliseconds>(finish_time - constructed_time).count();
