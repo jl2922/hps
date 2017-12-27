@@ -56,4 +56,4 @@ fi
 export PATH=$TOOLS_DIR/boost/bin:$PATH
 export LD_LIBRARY_PATH=$TOOLS_DIR/boost/lib:$LD_LIBRARY_PATH
 
-make test_all -j
+# make test_all -j
