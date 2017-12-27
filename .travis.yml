@@ -59,11 +59,11 @@ before_install:
   - pip install --user cpp-coveralls
   - ./install-dependencies.sh
   - echo "CXX := ${CXX_COMPILER}" > local.mk
-  - export TOOLS_DIR=$TRAVIS_BUILD_DIR/tools
-  - export PATH=$TOOLS_DIR/boost/bin:$PATH
-  - export LD_LIBRARY_PATH=$TOOLS_DIR/boost/lib:$LD_LIBRARY_PATH
-  - export PATH=$TOOLS_DIR/protobuf/bin:$PATH
-  - export LD_LIBRARY_PATH=$TOOLS_DIR/protobuf/lib:$LD_LIBRARY_PATH
-script: echo $PATH
+script: bash ./ci.sh
 after_success:
   - coveralls --exclude gtest --exclude-pattern .*_test.cc --gcov-options '\-lp'
+cache:
+  directories:
+    - tools/protobuf
+    - tools/capnproto
+    - tools/boost
