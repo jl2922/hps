@@ -18,6 +18,7 @@ void serialize_to_stream(const T& t, std::ostream& stream) {
 }
 
 // Parse from an STL istream and save to the data t passed in.
+// Recommended for repeated use inside a loop.
 template <class T>
 void parse_from_stream(T& t, std::istream& stream) {
   InputBuffer<Stream> ib(stream);
@@ -33,6 +34,7 @@ T parse_from_stream(std::istream& stream) {
 }
 
 // Serialize data t to the STL string passed in.
+// Recommended for repeated use inside a loop.
 template <class T>
 void serialize_to_string(const T& t, std::string& str) {
   OutputBuffer<std::string> ob(str);
@@ -49,6 +51,7 @@ std::string serialize_to_string(const T& t) {
 }
 
 // Parse from an STL string and save to the data t passed in.
+// Recommended for repeated use inside a loop.
 template <class T>
 void parse_from_string(T& t, const std::string& str) {
   InputBuffer<std::string> ib(str);

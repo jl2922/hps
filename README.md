@@ -8,7 +8,7 @@ A C++11 Serializer for High Performance Computing.
 
 HPS is a header-only C++11 serialization library for high performance computing where we need to efficiently serialize and pass highly structured data over the network, write them to the file system, or compress them to reduce the memory consumption.
 
-It is designed to be extremely easy to program and ultrafast for serializing common data structures in high performance computing, but may require some human efforts for heterogeneous data and backward data compatibility issues, which seldom occurs in scientific computing.
+It is designed to be extremely easy to program and ultrafast for serializing common data structures in high performance computing, and with some amount of human efforts it can also achieve optimal speed for heterogeneous data and backward data compatibility.
 
 ## Installation
 
@@ -40,6 +40,12 @@ int main() {
 }
 // Compile with C++11 or above.
 ```
+Then we can send the string over the network in MPI for example
+```c++
+MPI_Send(serialized.c_str(), serialized.size(), MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+```
+There are also the `serialize_to_stream` and `parse_from_stream` functions for writing the data to or reading it from file streams.
+The bottom of this document contains all the APIs that HPS provides.
 
 We can also extend HPS to support custom types.
 HPS internally uses static polymorphism on class `Serializer<DataType, BufferType>` to support different types.
@@ -102,10 +108,12 @@ See [float_serializer.h](https://github.com/jl2922/hps/blob/master/src/basic_typ
 The encoding scheme of HPS is very similar to Google's protobuf.
 Google provides an [extremely detailed exlanation](https://developers.google.com/protocol-buffers/docs/encoding) on that.
 
-The differences between protobuf's encoding scheme and HPS' are:
+The major difference between protobuf's encoding scheme and HPS' is that the field numbers or wire types are not stored and the messages are always serialized and parsed in the same order, unless explicitly specialized for custom types.
+This gives HPS a significant advantage in both the speed and the size of the serialized messages over protobuf on nested data structures, especially when deeper messages are small.
 
-* Standard int types (int, long, etc) uses zigzag encoding as well.
-* No field numbers or wire types are stored, messages are always serialized and parsed in the same order (Unless explicitly specialized for custom types).
+Another difference is in the handling of the integral types.
+There is no specific types for signed integers like `sint32` or `sint64` and the zigzag varint encoding will be used on standard int types, i.e. `int`, `long long`, etc.
+And before serialization, we can use smaller integral types such as `int16_t` to store the data more compactly in a memory constrained environment, instead of at least `int32` as in protobuf.
 
 ## Benchmark
 
@@ -127,6 +135,7 @@ void serialize_to_stream(const T& t, std::ostream& stream);
 ```
 ```c++
 // Parse from an STL istream and save to the data t passed in.
+// Recommended for repeated use inside a loop.
 void parse_from_stream(T& t, std::istream& stream);
 ```
 ```c++
@@ -135,6 +144,7 @@ T parse_from_stream<T>(std::istream& stream);
 ```
 ```c++
 // Serialize data t to the STL string passed in.
+// Recommended for repeated use inside a loop.
 void serialize_to_string(const T& t, std::string& str);
 ```
 ```c++
@@ -143,6 +153,7 @@ std::string serialize_to_string(const T& t);
 ```
 ```c++
 // Parse from an STL string and save to the data t passed in.
+// Recommended for repeated use inside a loop.
 void parse_from_string(T& t, const std::string& str);
 ```
 ```c++
@@ -154,3 +165,15 @@ HPS supports the following types and any combinations of them out of the box:
 
 * All primitive numeric types, e.g. `int, double, bool, char, uint8_t, size_t, ...`
 * `string, array, deque, list, map, unordered_map, set, unordered_set, pair, vector`
+
+## Tips for Heterogeneous Data
+
+Heterogeneous data here refer messages that contain one or more data structures that occur repeatedly with some fields missing irregularly in different instances.
+
+There is no panacea for achieving best performance for this type of data in all cases.
+
+Protobuf uses an additional integer to indicate the existence of each field, which is best suitable for cases where there are lots of fields and most of them are missing.
+
+Another possible encoding scheme is bit representation, i.e. use a bit vector to indicate the existence of the fields. This is best suitable for cases where there are not many fields and fields are missing less often.
+
+And for cases where most of the fields seldom have missing values, the reverse of protobuf's scheme maybe the best choice, i.e. use a vector to store the indices of the missing fields.
