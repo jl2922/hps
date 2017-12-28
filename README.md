@@ -6,7 +6,7 @@ A C++11 Serializer for High Performance Computing.
 
 ## Overview
 
-HPS is a header-only C++11 serialization library for high performance computing where we need to efficiently serialize and pass highly structured data over the network, write them to the file system, or compress them to reduce the memory consumption.
+HPS is a header-only C++11 serialization library for serious high performance computing where we need to efficiently serialize and pass highly structured data over the network, write them to the file system, or compress them to reduce the memory consumption.
 
 It is designed to be extremely easy to program and ultrafast for serializing common data structures in high performance computing, and with some amount of human efforts, it can also achieve optimal speed for heterogeneous data and handle backward data compatibility.
 
