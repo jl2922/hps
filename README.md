@@ -104,16 +104,16 @@ Google provides an [extremely detailed exlanation](https://developers.google.com
 
 The differences between protobuf's encoding scheme and HPS' are:
 
-* Standard int types (int, long, etc) uses zigzag encoding as well
+* Standard int types (int, long, etc) uses zigzag encoding as well.
 * No field numbers or wire types are stored, messages are always serialized and parsed in the same order (Unless explicitly specialized for custom types).
 
 ## Benchmark
 
 The performance of HPS comparing to other well-known C++ serializers for some most common data structures in high performance computing are as follows:
 
+Note:
+For the hash map benchmarks, both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types.
 The test codes are in the [benchmark](https://github.com/jl2922/hps/tree/master/src/benchmark) directory.
-
-Note: for the hash map benchmark, both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types.
 
 ![Serialize and Parse Time](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/time.png)
 
