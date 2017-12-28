@@ -8,12 +8,12 @@ A C++11 Serializer for High Performance Computing.
 
 HPS is a header-only C++11 serialization library for high performance computing where we need to efficiently serialize and pass highly structured data over the network, write them to the file system, or compress them to reduce the memory consumption.
 
-It is designed to be extremely easy to program and ultrafast for serializing common data structures in high performance computing, and with some amount of human efforts it can also achieve optimal speed for heterogeneous data and backward data compatibility.
+It is designed to be extremely easy to program and ultrafast for serializing common data structures in high performance computing, and with some amount of human efforts, it can also achieve optimal speed for heterogeneous data and backward data compatibility.
 
 ## Installation
 
 HPS is a header-only library.
-Simply include the `hps.h` file, which will include all the other headers.
+Simply include the `hps.h` file, which includes all the other headers.
 
 ## Usage
 
@@ -48,8 +48,8 @@ There are also the `serialize_to_stream` and `parse_from_stream` functions for w
 The bottom of this document contains all the APIs that HPS provides.
 
 We can also extend HPS to support custom types.
-HPS internally uses static polymorphism on class `Serializer<DataType, BufferType>` to support different types.
-All we need to do is to specialize the `Serializer` for the new type and HPS will support it and also support any combination of this type with STL containers and other specialized types.
+HPS internally uses static polymorphism on the class `Serializer<DataType, BufferType>` to support different types.
+All we need to do is to specialize the `Serializer` for the new type, and HPS will support it, together with any combination of this type with STL containers and other specialized types.
 
 The following example shows the serialization of a typical quantum system object consisting of several electrons, some of which are excited from orbitals `orbs_from` to `orbs_to`.
 
@@ -108,11 +108,11 @@ See [float_serializer.h](https://github.com/jl2922/hps/blob/master/src/basic_typ
 The encoding scheme of HPS is very similar to Google's protobuf.
 Google provides an [extremely detailed exlanation](https://developers.google.com/protocol-buffers/docs/encoding) on that.
 
-The major difference between protobuf's encoding scheme and HPS' is that the field numbers or wire types are not stored and the messages are always serialized and parsed in the same order, unless explicitly specialized for custom types.
+The major difference between protobuf's encoding scheme and HPS' is that the field numbers or wire types are not stored and the messages are always serialized and parsed in the same order unless explicitly specialized for custom types.
 This gives HPS a significant advantage in both the speed and the size of the serialized messages over protobuf on data with nested structures, especially when deeper structures are small.
 
 Another difference is in the handling of the integral types.
-There is no specific types for signed integers like `sint32` or `sint64` in protobuf and the zigzag varint encoding will be used on standard int types, i.e. `int`, `long long`, etc.
+There are no specific types for signed integers like `sint32` or `sint64` in protobuf and the zigzag varint encoding will be used on standard int types, i.e. `int`, `long long`, etc.
 And before serialization, we can use smaller integral types such as `int16_t` to store the data more compactly in memory constrained environments, instead of at least `int32` as in protobuf.
 
 ## Benchmark
@@ -164,16 +164,16 @@ T parse_from_string<T>(const std::string& str);
 HPS supports the following types and any combinations of them out of the box:
 
 * All primitive numeric types, e.g. `int, double, bool, char, uint8_t, size_t, ...`
-* STL containers `string, array, deque, list, map, unordered_map, set, unordered_set, pair, vector`
+* STL containers `string, array, deque, list, map, unordered_map, set, unordered_set, pair, vector`.
 
 ## Tips for Heterogeneous Data
 
 Heterogeneous data here refer messages that contain data structures that occur repeatedly and have some fields in them missing irregularly in different instances of the structure.
 
-There is no panacea for achieving best performance for this type of data in all cases.
+There is no panacea for achieving the best performance for this type of data in all cases.
 
 Protobuf uses an additional integer to indicate the existence of each field, which is best suitable for cases where there are lots of fields and most of them are missing.
 
-Another possible encoding scheme is bit representation, i.e. use a bit vector to indicate the existence of the fields. This is best suitable for cases where there are not many fields and fields are missing less often.
+Another possible encoding scheme is bit representation, i.e., use a bit vector to indicate the existence of the fields. This is best suitable for cases where there are not many fields and fields are missing less often.
 
-And for cases where most of the fields seldom have missing values, the reverse of protobuf's scheme maybe the best choice, i.e. use a vector to store the indices of the missing fields.
+And for cases where most of the fields seldom have missing values, the reverse of protobuf's scheme may be the best choice, i.e., use a vector to store the indices of the missing fields.
