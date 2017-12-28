@@ -8,7 +8,7 @@ A C++11 Serializer for High Performance Computing.
 
 HPS is a header-only C++11 serialization library for serious high performance computing where we need to efficiently serialize and pass highly structured data over the network, write them to the file system, or compress them to reduce the memory consumption.
 
-It is designed to be extremely easy to program and ultrafast for serializing common data structures in high performance computing, and with some amount of human efforts, it can also achieve optimal speed for heterogeneous data and handle backward data compatibility.
+It is designed to be extremely **easy to program** and **ultrafast** for serializing **common data structures in high performance computing**, and with some amount of human efforts, it can also achieve optimal speed for heterogeneous data and handle backward data compatibility.
 
 ## Installation
 
@@ -108,11 +108,11 @@ See [float_serializer.h](https://github.com/jl2922/hps/blob/master/src/basic_typ
 The encoding scheme of HPS is very similar to Google's protobuf.
 Google provides an [extremely detailed exlanation](https://developers.google.com/protocol-buffers/docs/encoding) on that.
 
-The major difference between protobuf's encoding scheme and HPS' is that the field numbers or wire types are not stored and the messages are always serialized and parsed in the same order unless explicitly specialized for custom types.
+The major difference between protobuf's encoding scheme and HPS' is that the **field numbers or wire types are not stored** and the messages are always serialized and parsed in the same order unless explicitly specialized for custom types.
 This gives HPS a significant advantage in both the speed and the size of the serialized messages over protobuf on data with nested structures, especially when deeper structures are small.
 
 Another difference is in the handling of the integral types.
-There are no specific types for signed integers like `sint32` or `sint64` in protobuf and the zigzag varint encoding will be used on standard int types, i.e. `int`, `long long`, etc.
+There are no specific types for signed integers like the `sint32` or `sint64` in protobuf and the **zigzag varint encoding will be used on standard int types**, i.e. `int`, `long long`, etc.
 And before serialization, we can use smaller integral types such as `int16_t` to store the data more compactly in memory constrained environments, instead of at least `int32` as in protobuf.
 
 ## Benchmark
