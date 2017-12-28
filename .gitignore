@@ -8,3 +8,4 @@ local.mk
 
 # OS and editor files.
 .vscode/
+.DS_Store
