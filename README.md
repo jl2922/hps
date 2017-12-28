@@ -127,6 +127,17 @@ The test codes are in the [benchmark](https://github.com/jl2922/hps/tree/master/
 
 ![Serialized Message Size](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/size.png)
 
+In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of lines of code for these test cases:
+
+| SLOC | double array | sparse matrix | hash map | fixed cost |
+| --- | :---: | :---: | :---: | :---: |
+| **protobuf** | 12 | 23 | 12 | 17 |
+| **capnproto** | 15 | 25 | - | 21 |
+| **boost** | 13 | 20 | 13 | 13 |
+| **hps** | 7 | 16 | 7 | 2 |
+
+Note: fixed costs including the estimated amount of lines of commands needed for a proficient user to install the library, set the environment variables, extra lines of code needed in the Makefile, and various includes, etc.
+
 ## API Reference
 
 ```c++
