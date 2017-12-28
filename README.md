@@ -51,7 +51,7 @@ We can also extend HPS to support custom types.
 HPS internally uses static polymorphism on class `Serializer<DataType, BufferType>` to support different types.
 All we need to do is to specialize the `Serializer` for the new type and HPS will support it and also support any combination of this type with STL containers and other specialized types.
 
-The following example shows the serialization of a typical quantum system consisting of some electrons, a few of which are excited from orbital `orbs_from` to `orbs_to`.
+The following example shows the serialization of a typical quantum system object consisting of several electrons, some of which are excited from orbitals `orbs_from` to `orbs_to`.
 
 ```c++
 #include <cassert>
@@ -109,18 +109,18 @@ The encoding scheme of HPS is very similar to Google's protobuf.
 Google provides an [extremely detailed exlanation](https://developers.google.com/protocol-buffers/docs/encoding) on that.
 
 The major difference between protobuf's encoding scheme and HPS' is that the field numbers or wire types are not stored and the messages are always serialized and parsed in the same order, unless explicitly specialized for custom types.
-This gives HPS a significant advantage in both the speed and the size of the serialized messages over protobuf on nested data structures, especially when deeper messages are small.
+This gives HPS a significant advantage in both the speed and the size of the serialized messages over protobuf on data with nested structures, especially when deeper structures are small.
 
 Another difference is in the handling of the integral types.
-There is no specific types for signed integers like `sint32` or `sint64` and the zigzag varint encoding will be used on standard int types, i.e. `int`, `long long`, etc.
-And before serialization, we can use smaller integral types such as `int16_t` to store the data more compactly in a memory constrained environment, instead of at least `int32` as in protobuf.
+There is no specific types for signed integers like `sint32` or `sint64` in protobuf and the zigzag varint encoding will be used on standard int types, i.e. `int`, `long long`, etc.
+And before serialization, we can use smaller integral types such as `int16_t` to store the data more compactly in memory constrained environments, instead of at least `int32` as in protobuf.
 
 ## Benchmark
 
 The performance of HPS comparing to other well-known C++ serializers for some most common data structures in high performance computing are as follows:
 
 Note:
-For the hash map benchmarks, both HPS and Boost serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types.
+For the hash map benchmarks, both HPS and Boost serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types at this time.
 The test codes are in the [benchmark](https://github.com/jl2922/hps/tree/master/src/benchmark) directory.
 
 ![Serialize and Parse Time](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/time.png)
@@ -164,7 +164,7 @@ T parse_from_string<T>(const std::string& str);
 HPS supports the following types and any combinations of them out of the box:
 
 * All primitive numeric types, e.g. `int, double, bool, char, uint8_t, size_t, ...`
-* `string, array, deque, list, map, unordered_map, set, unordered_set, pair, vector`
+* STL containers `string, array, deque, list, map, unordered_map, set, unordered_set, pair, vector`
 
 ## Tips for Heterogeneous Data
 
