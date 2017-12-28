@@ -168,7 +168,7 @@ HPS supports the following types and any combinations of them out of the box:
 
 ## Tips for Heterogeneous Data
 
-Heterogeneous data here refer messages that contain one or more data structures that occur repeatedly with some fields missing irregularly in different instances.
+Heterogeneous data here refer messages that contain data structures that occur repeatedly and have some fields in them missing irregularly in different instances of the structure.
 
 There is no panacea for achieving best performance for this type of data in all cases.
 
