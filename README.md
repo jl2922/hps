@@ -11,10 +11,10 @@ HPS is a header-only C++11 library for serializing highly structured data, origi
 It has the **state of the art performance** in terms of both the speed and the size of the serialized messages.
 
 In addition, it requires the least amount of human efforts to use for use cases similar to high performance computing.
-There is **no need for separate schema files or special data structures**, HPS works on STL containers and user defined types directly just like Boost.
-Even extra compilation and linking of the library is not needed, HPS is a header-only library and all you need is `#include "path/to/hps.h"`.
+There is **no need for separate schema files or special data structures**, HPS works on STL containers and user defined types directly, just like Boost but much faster.
+Even extra compilation and linking of the library is not needed, HPS is header-only and all you need is `#include "path/to/hps.h"`.
 
-Note: HPS requires manual handling of data backward compatibility.
+Note: HPS requires manual handling of data backward compatibility issues.
 
 ## Installation
 
