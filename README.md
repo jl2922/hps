@@ -56,7 +56,7 @@ For example
 ```c++
 std::ofstream out_file("data.log", std::ofstream::binary);
 hps::serialize_to_stream(data, out_file);
-std::ifstream in_file("data.log", std::ofstream::binary);
+std::ifstream in_file("data.log", std::ifstream::binary);
 auto parsed = hps::parse_from_stream<std::vector<int>>(in_file);
 ```
 The bottom of this document contains all the APIs that HPS provides.

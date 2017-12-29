@@ -7,7 +7,7 @@ int main() {
   std::vector<int> data({22, 333, -4444});
 
   std::ofstream out_file("data.log", std::ofstream::binary);
-  std::ifstream in_file("data.log", std::ofstream::binary);
+  std::ifstream in_file("data.log", std::ifstream::binary);
 
   hps::serialize_to_stream(data, out_file);
   out_file.close();
