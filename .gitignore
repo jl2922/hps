@@ -9,3 +9,7 @@ local.mk
 # OS and editor files.
 .vscode/
 .DS_Store
+
+# Other temporary files.
+*.log
+*.bak
