@@ -13,8 +13,7 @@ Check the benchmarks below.
 
 In addition, it requires the least amount of human efforts to use for high performance computing or similar use cases.
 There is **no need for separate schema files or special data structures**, HPS works on STL containers and user-defined types directly, just like Boost but much faster.
-HPS provides the speed with unsacrificing flexibility.
-Also there is no need to deal with extra compilation or linking of the library, HPS is header-only and all you need is `#include "path/to/hps.h"`.
+Also, there is no need to deal with extra compilation or linking of the library, HPS is header-only and all you need is `#include "path/to/hps.h"`.
 
 Note: HPS requires manual handling of data backward compatibility issues.
 
