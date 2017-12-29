@@ -66,3 +66,5 @@ cache:
     - tools/protobuf
     - tools/capnproto
     - tools/boost
+notifications:
+  email: false
