@@ -52,7 +52,6 @@ TEST(SparseMatrixBenchmarkLargeTest, Protobuf) {
 
   // Serialize and parse.
   std::string serialized;
-  serialized.reserve(N_ROWS * N_NONZERO_COLS * 11);
   origin.SerializeToString(&serialized);
   protobuf_benchmark::SparseMatrix parsed;
   parsed.ParseFromString(serialized);
@@ -175,7 +174,6 @@ TEST(SparseMatrixBenchmarkLargeTest, HPS) {
 
   // Serialize and parse.
   std::string serialized;
-  serialized.reserve(N_ROWS * N_NONZERO_COLS * 11);
   hps::serialize_to_string(origin, serialized);
   auto parsed = hps::parse_from_string<SparseMatrix>(serialized);
 
