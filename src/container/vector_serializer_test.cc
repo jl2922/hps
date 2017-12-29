@@ -50,6 +50,48 @@ TEST(VectorSerializerTest, VectorOfVector) {
   EXPECT_THAT(output[1], testing::ElementsAre(0));
 }
 
+TEST(VectorSerializerTest, BoolElements) {
+  std::vector<bool> input;
+  const int n_elems = 1 << 10;
+  input.resize(n_elems);
+  for (int i = 0; i < n_elems; i++) input[i] = (i < 10 || i % 10 == 0) ? 1 : 0;
+  std::stringstream ss;
+  hps::OutputBuffer<hps::Stream> ob(ss);
+  hps::Serializer<std::vector<bool>, hps::Stream>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer<hps::Stream> ib(ss);
+  std::vector<bool> output;
+  hps::Serializer<std::vector<bool>, hps::Stream>::parse(output, ib);
+  EXPECT_EQ(input, output);
+  EXPECT_THAT(ss.str(), testing::SizeIs(testing::Le((n_elems << 3) + 4)));
+}
+
+TEST(VectorSerializerTest, UniquePtrElements) {
+  std::vector<std::unique_ptr<int>> input;
+  const int n_elems = 1 << 10;
+  input.resize(n_elems);
+  for (int i = 0; i < n_elems; i += 3) input[i].reset(new int(i >> 4));
+  std::stringstream ss;
+  hps::OutputBuffer<hps::Stream> ob(ss);
+  hps::Serializer<std::vector<std::unique_ptr<int>>, hps::Stream>::serialize(input, ob);
+  ob.flush();
+
+  hps::InputBuffer<hps::Stream> ib(ss);
+  std::vector<std::unique_ptr<int>> output;
+  hps::Serializer<std::vector<std::unique_ptr<int>>, hps::Stream>::parse(output, ib);
+  EXPECT_EQ(input.size(), output.size());
+  for (int i = 0; i < n_elems; i++) {
+    if (input[i]) {
+      EXPECT_TRUE(output[i]);
+      EXPECT_EQ(*input[i], *output[i]);
+    } else {
+      EXPECT_FALSE(output[i]);
+    }
+  }
+  EXPECT_THAT(ss.str(), testing::SizeIs(testing::Le((n_elems / 2))));
+}
+
 TEST(VectorSerializerLargeTest, ManyIntElements) {
   std::vector<int> input;
   const int n_elems = 1 << 25;

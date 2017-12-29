@@ -175,7 +175,7 @@ T parse_from_string<T>(const std::string& str);
 HPS supports the following types and any combinations of them out of the box:
 
 * All primitive numeric types, e.g. `int, double, bool, char, uint8_t, size_t, ...`
-* STL containers `string, array, deque, list, map, unordered_map, set, unordered_set, pair, vector`.
+* STL containers `string, array, deque, list, map, unordered_map, set, unordered_set, pair, vector, unique_ptr`.
 
 ## Tips for Heterogeneous Data
 
@@ -185,6 +185,9 @@ There is no panacea for achieving the best performance for this type of data in 
 
 Protobuf uses an additional integer to indicate the existence of each field, which is best suitable for cases where there are lots of fields and most of them are missing.
 
-Another possible encoding scheme is bit representation, i.e., use a bit vector to indicate the existence of the fields. This is best suitable for cases where there are not many fields and fields are missing less often.
+Another possible encoding scheme is bit representation, i.e., use a bit vector to indicate the existence of the fields.
+This is best suitable for cases where there are not many fields and fields are missing less often.
+There is no need to deal with bit operations.
+An STL boolean vector will use a compact format automatically and store 8 bits in each byte and same for its HPS serialized version.
 
 And for cases where most of the fields seldom have missing values, the reverse of protobuf's scheme may be the best choice, i.e., use a vector to store the indices of the missing fields.
