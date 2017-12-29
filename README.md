@@ -6,12 +6,13 @@ A C++11 Serialization Library for Highly Structured Data.
 
 ## Overview
 
-HPS is a header-only C++11 library for serializing highly structured data, originally designed for serious high performance scientific computing where we need to efficiently serialize highly structured data to a sufficiently small and flat structure and pass them over the network, write them to the file system, or simply to compress them to reduce the memory consumption.
+HPS is a header-only C++11 library for serializing highly structured data, originally designed for high performance scientific computing where we need to efficiently serialize highly structured data to a sufficiently small and flat structure and pass them over the network, write them to the file system, or simply to compress them to reduce the memory consumption.
 
-It has the **state of the art performance** in terms of both the speed and the size of the serialized messages.
+It has the **state of the art performance** regarding both the speed and the size of the serialized messages.
+Check the benchmarks below.
 
-In addition, it requires the least amount of human efforts to use for use cases similar to high performance computing.
-There is **no need for separate schema files or special data structures**, HPS works on STL containers and user defined types directly, just like Boost but much faster.
+In addition, it requires the least amount of human efforts to use for high performance computing or similar use cases.
+There is **no need for separate schema files or special data structures**, HPS works on STL containers and user-defined types directly, just like Boost but much faster.
 Even extra compilation and linking of the library is not needed, HPS is header-only and all you need is `#include "path/to/hps.h"`.
 
 Note: HPS requires manual handling of data backward compatibility issues.
@@ -51,6 +52,13 @@ Then we can send the string over the network in MPI for example
 MPI_Send(serialized.c_str(), serialized.size(), MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 ```
 There are also the `serialize_to_stream` and `parse_from_stream` functions for writing the data to or reading it from file streams.
+For example
+```c++
+std::ofstream out_file("data.log", std::ofstream::binary);
+hps::serialize_to_stream(data, out_file);
+std::ifstream in_file("data.log", std::ofstream::binary);
+auto parsed = hps::parse_from_stream<std::vector<int>>(in_file);
+```
 The bottom of this document contains all the APIs that HPS provides.
 
 We can also extend HPS to support custom types.
@@ -142,7 +150,7 @@ In addition to the traditional benchmarks for computational cost, we also provid
 | **boost** | 13 | 20 | 13 | 13 |
 | **hps** | 7 | 16 | 7 | 2 |
 
-Note: fixed costs including the estimated amount of lines of commands needed for a proficient user to install the library, set the environment variables, extra lines of code needed in the Makefile, and various includes, etc.
+Note: fixed cost includes the estimated amount of lines of commands needed for a proficient user to install the library, set the environment variables, extra lines of code needed in the Makefile, and various includes, etc.
 
 ## API Reference
 
