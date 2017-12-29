@@ -1,17 +1,18 @@
 # HPS
 
-A C++11 Serialization Library for Highly Structured Data.
+A C++11 High Performance Serialization Library.
 
 [![Build Status](https://travis-ci.org/jl2922/hps.svg?branch=master&style=flat)](https://travis-ci.org/jl2922/hps)
 
 ## Overview
 
-HPS is a header-only C++11 library for serializing highly structured data, originally designed for high performance scientific computing where we need to efficiently serialize highly structured data to a sufficiently small and flat structure and pass them over the network, write them to the file system, or simply to compress them to reduce the memory consumption.
+HPS is a high performance header-only C++11 library for data serialization.
+It is designed for high performance computing where we need to efficiently serialize highly structured data or objects to a sufficiently small and flat structure and pass them over the network, write them to the file system, or simply to compress them to reduce the memory consumption.
 
 It has the **state of the art performance** regarding both the speed and the size of the serialized messages.
 Check the benchmarks below.
 
-In addition, it requires the least amount of human efforts to use for high performance computing or similar use cases.
+In addition, it requires the least amount of human efforts to use for common data structures in high performance computing, such as arrays, matrices, maps, etc.
 There is **no need for separate schema files or special data structures**, HPS works on STL containers and user-defined types directly, just like Boost but much faster.
 Also, there is no need to deal with extra compilation or linking of the library, HPS is header-only and all you need is `#include "path/to/hps.h"`.
 
@@ -134,14 +135,16 @@ And before serialization, we can use smaller integral types such as `int16_t` to
 The performance of HPS comparing to other well-known C++ serializers for some most common data structures in high performance computing are as follows:
 
 Note:
-For the hash map benchmarks, both HPS and Boost serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types at this time.
+The sparse matrix is stored as a list of rows, each of which contains a list of 64-bit integers for the column indices and a list of doubles for the values.
+The hash map is a map from strings to doubles.
+Both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types at this time.
 The test codes are in the [benchmark](https://github.com/jl2922/hps/tree/master/src/benchmark) directory.
 
 ![Serialize and Parse Time](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/time.png)
 
 ![Serialized Message Size](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/size.png)
 
-In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of lines of code for these test cases:
+In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of source lines of code for these test cases:
 
 | SLOC | double array | sparse matrix | hash map | fixed cost |
 | --- | :---: | :---: | :---: | :---: |
@@ -202,6 +205,6 @@ Protobuf uses an additional integer to indicate the existence of each field, whi
 Another possible encoding scheme is bit representation, i.e., use a bit vector to indicate the existence of the fields.
 This is best suitable for cases where there are not many fields and fields are missing less often.
 There is no need to deal with bit operations directly.
-An STL `vector<bool>` will use a compact format automatically, i.e., store 8 bits in each byte, and same for the HPS serialized version.
+An STL `vector<bool>` will use a compact format automatically, i.e., eight booleans in a byte, and same for the HPS serialized version.
 
 And for cases where most of the fields seldom have missing values, the reverse of protobuf's scheme may be the best choice, i.e., use a vector to store the indices of the missing fields.
