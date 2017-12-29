@@ -188,7 +188,7 @@ T parse_from_string<T>(const std::string& str);
 
 HPS supports the following types and any combinations of them out of the box:
 
-* All primitive numeric types, e.g. `int, double, bool, char, uint8_t, size_t, ...`
+* All primitive numeric types, a.k.a. `std::is_arithmetic<T>`, e.g. `int, double, bool, char, uint8_t, size_t, ...`
 * STL containers `string, array, deque, list, map, unordered_map, set, unordered_set, pair, vector, unique_ptr`.
 
 ## Tips for Heterogeneous Data
