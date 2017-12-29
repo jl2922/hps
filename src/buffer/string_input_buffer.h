@@ -17,7 +17,7 @@ class InputBuffer<std::string> {
   }
 
   char read_char() {
-    const char ch = str->at(pos);
+    const char ch = (*str)[pos];
     pos++;
     return ch;
   }
