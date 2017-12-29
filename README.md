@@ -201,7 +201,7 @@ Protobuf uses an additional integer to indicate the existence of each field, whi
 
 Another possible encoding scheme is bit representation, i.e., use a bit vector to indicate the existence of the fields.
 This is best suitable for cases where there are not many fields and fields are missing less often.
-There is no need to deal with bit operations.
-An STL boolean vector will use a compact format automatically and store 8 bits in each byte and same for its HPS serialized version.
+There is no need to deal with bit operations directly.
+An STL `vector<bool>` will use a compact format automatically, i.e., store 8 bits in each byte, and same for the HPS serialized version.
 
 And for cases where most of the fields seldom have missing values, the reverse of protobuf's scheme may be the best choice, i.e., use a vector to store the indices of the missing fields.
