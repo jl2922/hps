@@ -66,6 +66,22 @@ T parse_from_string(const std::string& str) {
   return t;
 }
 
+// Parse from a char array and save to the data t passed in.
+// Recommended for repeated use inside a loop.
+template <class T>
+void parse_from_char_array(T& t, const char* arr) {
+  InputBuffer<char*> ib(str);
+  Serializer<T, char*>::parse(t, ib);
+}
+
+// Parse from a char array and return the data.
+template <class T>
+T parse_from_char_array(const char* arr) {
+  T t;
+  parse_from_char_array<T>(t, arr);
+  return t;
+}
+
 }  // namespace hps
 
 #endif

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "input_buffer.h"
-
 #include <cstring>
+#include "input_buffer.h"
 
 namespace hps {
 
