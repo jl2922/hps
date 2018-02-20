@@ -70,7 +70,7 @@ T parse_from_string(const std::string& str) {
 // Recommended for repeated use inside a loop.
 template <class T>
 void parse_from_char_array(T& t, const char* arr) {
-  InputBuffer<char*> ib(str);
+  InputBuffer<char*> ib(arr);
   Serializer<T, char*>::parse(t, ib);
 }
 
