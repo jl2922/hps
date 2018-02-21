@@ -1,5 +1,4 @@
-#ifndef HPS_H_
-#define HPS_H_
+#pragma once
 
 #include <iostream>
 #include <sstream>
@@ -83,5 +82,3 @@ T parse_from_char_array(const char* arr) {
 }
 
 }  // namespace hps
-
-#endif

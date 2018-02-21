@@ -1,5 +1,4 @@
-#ifndef HPS_INPUT_BUFFER_H_
-#define HPS_INPUT_BUFFER_H_
+#pragma once
 
 namespace hps {
 
@@ -10,5 +9,3 @@ class InputBuffer {
 };
 
 }  // namespace hps
-
-#endif

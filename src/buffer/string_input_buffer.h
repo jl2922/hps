@@ -1,5 +1,4 @@
-#ifndef HPS_STRING_INPUT_BUFFER_H_
-#define HPS_STRING_INPUT_BUFFER_H_
+#pragma once
 
 #include <string>
 #include "input_buffer.h"
@@ -29,5 +28,3 @@ class InputBuffer<std::string> {
 };
 
 }  // namespace hps
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef HPS_SERIALIZER_H_
-#define HPS_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <stdexcept>
@@ -24,5 +23,3 @@ class Serializer {
 };
 
 }  // namespace hps
-
-#endif

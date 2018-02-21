@@ -1,5 +1,4 @@
-#ifndef HPS_SET_SERIALIZER_H_
-#define HPS_SET_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <set>
@@ -31,5 +30,3 @@ class Serializer<std::set<T>, B> {
 };
 
 }  // namespace hps
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef HPS_INT_SERIALIZER_H_
-#define HPS_INT_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <type_traits>
@@ -31,5 +30,3 @@ class Serializer<
 };
 
 }  // namespace hps
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef HPS_STRING_OUTPUT_BUFFER_H_
-#define HPS_STRING_OUTPUT_BUFFER_H_
+#pragma once
 
 #include <string>
 #include "output_buffer.h"
@@ -55,5 +54,3 @@ class OutputBuffer<std::string> {
 };
 
 }  // namespace hps
-
-#endif

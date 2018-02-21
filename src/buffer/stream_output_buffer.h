@@ -1,5 +1,4 @@
-#ifndef HPS_STREAM_OUTPUT_BUFFER_H_
-#define HPS_STREAM_OUTPUT_BUFFER_H_
+#pragma once
 
 #include <cstring>
 #include <iostream>
@@ -57,5 +56,3 @@ class OutputBuffer<Stream> {
 };
 
 }  // namespace hps
-
-#endif

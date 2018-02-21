@@ -1,5 +1,4 @@
-#ifndef HPS_UINT_SERIALIZER_H_
-#define HPS_UINT_SERIALIZER_H_
+#pragma once
 
 #include <cassert>
 #include <iostream>
@@ -49,5 +48,3 @@ class Serializer<T, B, typename std::enable_if<std::is_unsigned<T>::value, void>
 };
 
 }  // namespace hps
-
-#endif
