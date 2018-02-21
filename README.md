@@ -188,6 +188,15 @@ void parse_from_string(T& t, const std::string& str);
 // Parse from an STL string and return the data.
 T parse_from_string<T>(const std::string& str);
 ```
+```c++
+// Parse from a char array and save to the data t passed in.
+// Recommended for repeated use inside a loop.
+void parse_from_char_array(T& t, const char* arr);
+```
+```c++
+// Parse from a char array and return the data.
+T parse_from_char_array<T>(const char* arr);
+```
 
 HPS supports the following types and any combinations of them out of the box:
 
