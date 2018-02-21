@@ -1,5 +1,4 @@
-#ifndef HPS_VECTOR_SERIALIZER_H_
-#define HPS_VECTOR_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -134,5 +133,3 @@ class Serializer<std::vector<std::unique_ptr<T>>, B> {
 };
 
 }  // namespace hps
-
-#endif

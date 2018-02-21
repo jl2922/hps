@@ -1,5 +1,4 @@
-#ifndef HPS_ARRAY_SERIALIZER_H_
-#define HPS_ARRAY_SERIALIZER_H_
+#pragma once
 
 #include <array>
 #include <iostream>
@@ -84,5 +83,3 @@ class Serializer<std::array<bool, N>, B> {
 };
 
 }  // namespace hps
-
-#endif

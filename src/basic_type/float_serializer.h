@@ -1,5 +1,4 @@
-#ifndef HPS_DOUBLE_SERIALIZER_H_
-#define HPS_DOUBLE_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <type_traits>
@@ -22,5 +21,3 @@ class Serializer<T, B, typename std::enable_if<std::is_floating_point<T>::value,
 };
 
 }  // namespace hps
-
-#endif

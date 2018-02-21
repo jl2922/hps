@@ -1,5 +1,4 @@
-#ifndef HPS_STRING_SERIALIZER_H_
-#define HPS_STRING_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -26,5 +25,3 @@ class Serializer<std::string, B> {
 };
 
 }  // namespace hps
-
-#endif

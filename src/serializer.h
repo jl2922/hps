@@ -1,5 +1,4 @@
-#ifndef HPS_SERIALIZER_H_
-#define HPS_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <stdexcept>
@@ -12,17 +11,9 @@ namespace hps {
 template <class T, class B, class Enable = void>
 class Serializer {
  public:
-  static void serialize(const T& t, OutputBuffer<B>& ob) {
-    (void)t;  // Avoid warnings.
-    (void)ob;
-    default_handler();
-  }
+  static void serialize(const T&, OutputBuffer<B>&) { default_handler(); }
 
-  static void parse(T& t, InputBuffer<B>& ib) {
-    (void)t;
-    (void)ib;
-    default_handler();
-  }
+  static void parse(T&, InputBuffer<B>&) { default_handler(); }
 
  private:
   static void default_handler() {
@@ -32,5 +23,3 @@ class Serializer {
 };
 
 }  // namespace hps
-
-#endif

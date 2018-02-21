@@ -1,5 +1,4 @@
-#ifndef HPS_LIST_SERIALIZER_H_
-#define HPS_LIST_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <list>
@@ -32,5 +31,3 @@ class Serializer<std::list<T>, B> {
 };
 
 }  // namespace hps
-
-#endif

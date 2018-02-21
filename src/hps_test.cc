@@ -17,6 +17,13 @@ TEST(HpsTest, ToAndFromString) {
   EXPECT_EQ(input, output);
 }
 
+TEST(HpsTest, FromCharArray) {
+  const double input = 1.1;
+  std::string str = hps::serialize_to_string(input);
+  const double output = hps::parse_from_char_array<double>(str.data());
+  EXPECT_EQ(input, output);
+}
+
 TEST(HpsLargeTest, LargeIntVectorToAndFromString) {
   std::vector<int> input;
   const int n_elems = 1 << 25;

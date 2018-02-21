@@ -1,28 +1,28 @@
 #pragma once
 
-#include <string>
+#include <cstring>
 #include "input_buffer.h"
 
 namespace hps {
 
 template <>
-class InputBuffer<std::string> {
+class InputBuffer<char*> {
  public:
-  InputBuffer(const std::string& str) : str(&str) { pos = 0; }
+  InputBuffer(const char* arr) : arr(arr) { pos = 0; }
 
   void read(char* content, size_t length) {
-    str->copy(content, length, pos);
+    strncpy(content, &arr[pos], length);
     pos += length;
   }
 
   char read_char() {
-    const char ch = (*str)[pos];
+    const char ch = arr[pos];
     pos++;
     return ch;
   }
 
  private:
-  const std::string* const str;
+  const char* const arr;
 
   size_t pos;
 };

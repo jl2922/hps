@@ -1,5 +1,4 @@
-#ifndef HPS_PAIR_SERIALIZER_H_
-#define HPS_PAIR_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <utility>
@@ -23,5 +22,3 @@ class Serializer<std::pair<T1, T2>, B> {
 };
 
 }  // namespace hps
-
-#endif

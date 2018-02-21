@@ -1,5 +1,4 @@
-#ifndef HPS_UNIQUE_PTR_SERIALIZER_H_
-#define HPS_UNIQUE_PTR_SERIALIZER_H_
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -32,5 +31,3 @@ class Serializer<std::unique_ptr<T>, B> {
 };
 
 }  // namespace hps
-
-#endif
