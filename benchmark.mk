@@ -29,6 +29,7 @@ CAPNPROTO_SRC := $(BENCHMARK_DIR)/capnproto_benchmark.capnp
 CAPNPROTO_COMPILED_H := $(BENCHMARK_DIR)/capnproto_benchmark.capnp.h
 CAPNPROTO_COMPILED_CC := $(BENCHMARK_DIR)/capnproto_benchmark.capnp.cc
 CAPNPROTO_COMPILED_CXX := $(BENCHMARK_DIR)/capnproto_benchmark.capnp.c++
+SRCS := $(shell find $(SRC_DIR) ! -name "*_test.cc" -name "*.cc")
 TESTS := $(shell find $(SRC_DIR)/benchmark -name "*_test.cc")
 HEADERS := $(shell find $(SRC_DIR) -name "*.h")
 OBJS := $(SRCS:$(SRC_DIR)/%.cc=$(BUILD_DIR)/%.o)
