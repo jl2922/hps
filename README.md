@@ -78,22 +78,28 @@ class QuantumState {
   uint16_t n_elecs;
   std::unordered_set<uint16_t> orbs_from;
   std::unordered_set<uint16_t> orbs_to;
+
+  template <class B>
+  void serialize(hps::OutputBuffer<B>& buf) const {
+    hps::Serializer<uint16_t, B>::serialize(n_elecs, buf);
+    hps::Serializer<std::unordered_set<uint16_t>, B>::serialize(orbs_from, buf);
+    hps::Serializer<std::unordered_set<uint16_t>, B>::serialize(orbs_to, buf);
+  }
+
+  template <class B>
+  void parse(hps::InputBuffer<B>& buf) {
+    hps::Serializer<uint16_t, B>::parse(n_elecs, buf);
+    hps::Serializer<std::unordered_set<uint16_t>, B>::parse(orbs_from, buf);
+    hps::Serializer<std::unordered_set<uint16_t>, B>::parse(orbs_to, buf);
+  }
 };
 
 namespace hps {
 template <class B>
 class Serializer<QuantumState, B> {
  public:
-  static void serialize(const QuantumState& qs, OutputBuffer<B>& ob) {
-    Serializer<uint16_t, B>::serialize(qs.n_elecs, ob);
-    Serializer<std::unordered_set<uint16_t>, B>::serialize(qs.orbs_from, ob);
-    Serializer<std::unordered_set<uint16_t>, B>::serialize(qs.orbs_to, ob);
-  }
-  static void parse(QuantumState& qs, InputBuffer<B>& ib) {
-    Serializer<uint16_t, B>::parse(qs.n_elecs, ib);
-    Serializer<std::unordered_set<uint16_t>, B>::parse(qs.orbs_from, ib);
-    Serializer<std::unordered_set<uint16_t>, B>::parse(qs.orbs_to, ib);
-  }
+  static void serialize(const QuantumState& qs, OutputBuffer<B>& buf) { qs.serialize(buf); }
+  static void parse(QuantumState& qs, InputBuffer<B>& buf) { qs.parse(buf); }
 };
 }  // namespace hps
 
