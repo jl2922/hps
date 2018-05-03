@@ -1,16 +1,15 @@
 #pragma once
 
 #include <string>
-#include "output_buffer.h"
+#include "../serializer.h"
 
 namespace hps {
 
 constexpr size_t STRING_OUTPUT_BUFFER_SIZE = 1 << 10;
 
-template <>
-class OutputBuffer<std::string> {
+class StringOutputBuffer {
  public:
-  OutputBuffer(std::string& str) : str(&str) { pos = 0; }
+  StringOutputBuffer(std::string& str) : str(&str) { pos = 0; }
 
   void write(const char* content, size_t length) {
     if (pos + length > STRING_OUTPUT_BUFFER_SIZE) {
@@ -38,6 +37,12 @@ class OutputBuffer<std::string> {
   void flush() {
     str->append(buffer, pos);
     pos = 0;
+  }
+
+  template <class T>
+  StringOutputBuffer& operator<<(const T& t) {
+    Serializer<T, StringOutputBuffer>::serialize(t, *this);
+    return *this;
   }
 
  private:

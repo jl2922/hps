@@ -36,8 +36,8 @@ For primitive types and most STL containers, serialization requires only one lin
 int main() {
   std::vector<int> data({22, 333, -4444});
 
-  std::string serialized = hps::serialize_to_string(data);
-  auto parsed = hps::parse_from_string<std::vector<int>>(serialized);
+  std::string serialized = hps::to_string(data);
+  auto parsed = hps::from_string<std::vector<int>>(serialized);
 
   assert(parsed == data);
 
@@ -52,19 +52,21 @@ Then we can send the string over the network in MPI for example
 ```c++
 MPI_Send(serialized.c_str(), serialized.size(), MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 ```
-There are also the `serialize_to_stream` and `parse_from_stream` functions for writing the data to or reading it from file streams.
+There are also the `to_stream` and `from_stream` functions for writing the data to or reading it from file streams.
 For example
 ```c++
 std::ofstream out_file("data.log", std::ofstream::binary);
-hps::serialize_to_stream(data, out_file);
+hps::to_stream(data, out_file);
 std::ifstream in_file("data.log", std::ifstream::binary);
-auto parsed = hps::parse_from_stream<std::vector<int>>(in_file);
+auto parsed = hps::from_stream<std::vector<int>>(in_file);
 ```
 The bottom of this document contains all the APIs that HPS provides.
 
 We can also extend HPS to support custom types.
 HPS internally uses static polymorphism on the class `Serializer<DataType, BufferType>` to support different types.
-All we need to do is to specialize the `Serializer` for the new type, and HPS will support it, together with any combination of this type with STL containers and other specialized types.
+`Serializer<DataType, BufferType>` will call the `serialize` and `parse` method of the corresponding type by default.
+All we need to do is provide the `serialize` and `parse` method or specialize the `Serializer` for the new type, and HPS will support it, together with any combination of this type with STL containers and other specialized types.
+We recommend providing the `serialize` and `parse` method whenever you have control over the structure of the new type.
 
 The following example shows the serialization of a typical quantum system object consisting of several electrons, some of which are excited from orbitals `orbs_from` to `orbs_to`.
 
@@ -75,33 +77,20 @@ The following example shows the serialization of a typical quantum system object
 
 class QuantumState {
  public:
-  uint16_t n_elecs;
-  std::unordered_set<uint16_t> orbs_from;
-  std::unordered_set<uint16_t> orbs_to;
+  unsigned n_elecs;
+  std::unordered_set<unsigned> orbs_from;
+  std::unordered_set<unsigned> orbs_to;
 
   template <class B>
-  void serialize(hps::OutputBuffer<B>& buf) const {
-    hps::Serializer<uint16_t, B>::serialize(n_elecs, buf);
-    hps::Serializer<std::unordered_set<uint16_t>, B>::serialize(orbs_from, buf);
-    hps::Serializer<std::unordered_set<uint16_t>, B>::serialize(orbs_to, buf);
+  void serialize(B& buf) const {
+    buf << n_elecs << orbs_from << orbs_to;
   }
 
   template <class B>
-  void parse(hps::InputBuffer<B>& buf) {
-    hps::Serializer<uint16_t, B>::parse(n_elecs, buf);
-    hps::Serializer<std::unordered_set<uint16_t>, B>::parse(orbs_from, buf);
-    hps::Serializer<std::unordered_set<uint16_t>, B>::parse(orbs_to, buf);
+  void parse(B& buf) {
+    buf >> n_elecs >> orbs_from >> orbs_to;
   }
 };
-
-namespace hps {
-template <class B>
-class Serializer<QuantumState, B> {
- public:
-  static void serialize(const QuantumState& qs, OutputBuffer<B>& buf) { qs.serialize(buf); }
-  static void parse(QuantumState& qs, InputBuffer<B>& buf) { qs.parse(buf); }
-};
-}  // namespace hps
 
 int main() {
   QuantumState qs;
@@ -110,7 +99,7 @@ int main() {
   qs.orbs_from.insert({11, 22});
   qs.orbs_to.insert({44, 66});
 
-  std::string serialized = hps::serialize_to_string(qs);
+  std::string serialized = hps::to_string(qs);
 
   std::cout << "size (B): " << serialized.size() << std::endl;
   // size (B): 7
@@ -165,43 +154,43 @@ Note: fixed cost includes the estimated amount of lines of commands needed for a
 
 ```c++
 // Serialize data t to an STL ostream.
-void serialize_to_stream(const T& t, std::ostream& stream);
+void to_stream(const T& t, std::ostream& stream);
 ```
 ```c++
 // Parse from an STL istream and save to the data t passed in.
 // Recommended for repeated use inside a loop.
-void parse_from_stream(T& t, std::istream& stream);
+void from_stream(T& t, std::istream& stream);
 ```
 ```c++
 // Parse from an STL istream and return the data.
-T parse_from_stream<T>(std::istream& stream);
+T from_stream<T>(std::istream& stream);
 ```
 ```c++
 // Serialize data t to the STL string passed in.
 // Recommended for repeated use inside a loop.
-void serialize_to_string(const T& t, std::string& str);
+void to_string(const T& t, std::string& str);
 ```
 ```c++
 // Serialize data t to an STL string and return it.
-std::string serialize_to_string(const T& t);
+std::string to_string(const T& t);
 ```
 ```c++
 // Parse from an STL string and save to the data t passed in.
 // Recommended for repeated use inside a loop.
-void parse_from_string(T& t, const std::string& str);
+void from_string(T& t, const std::string& str);
 ```
 ```c++
 // Parse from an STL string and return the data.
-T parse_from_string<T>(const std::string& str);
+T from_string<T>(const std::string& str);
 ```
 ```c++
 // Parse from a char array and save to the data t passed in.
 // Recommended for repeated use inside a loop.
-void parse_from_char_array(T& t, const char* arr);
+void from_char_array(T& t, const char* arr);
 ```
 ```c++
 // Parse from a char array and return the data.
-T parse_from_char_array<T>(const char* arr);
+T from_char_array<T>(const char* arr);
 ```
 
 HPS supports the following types and any combinations of them out of the box:

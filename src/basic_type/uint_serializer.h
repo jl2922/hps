@@ -12,7 +12,7 @@ namespace hps {
 template <class T, class B>
 class Serializer<T, B, typename std::enable_if<std::is_unsigned<T>::value, void>::type> {
  public:
-  static void serialize(const T& num, OutputBuffer<B>& ob) {
+  static void serialize(const T& num, B& ob) {
     if (num == 0) {
       ob.write_char(0);
       return;
@@ -30,7 +30,7 @@ class Serializer<T, B, typename std::enable_if<std::is_unsigned<T>::value, void>
     }
   }
 
-  static void parse(T& num, InputBuffer<B>& ib) {
+  static void parse(T& num, B& ib) {
     num = 0;
     size_t n_shifts = 0;
     char ch;

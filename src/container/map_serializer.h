@@ -11,7 +11,7 @@ namespace hps {
 template <class K, class V, class B>
 class Serializer<std::map<K, V>, B> {
  public:
-  static void serialize(const std::map<K, V>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::map<K, V>& container, B& ob) {
     Serializer<size_t, B>::serialize(container.size(), ob);
     for (const auto& elem : container) {
       Serializer<K, B>::serialize(elem.first, ob);
@@ -19,7 +19,7 @@ class Serializer<std::map<K, V>, B> {
     }
   }
 
-  static void parse(std::map<K, V>& container, InputBuffer<B>& ib) {
+  static void parse(std::map<K, V>& container, B& ib) {
     size_t n_elems;
     Serializer<size_t, B>::parse(n_elems, ib);
     container.clear();

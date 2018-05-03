@@ -14,13 +14,13 @@ class Serializer<
     B,
     typename std::enable_if<!std::is_floating_point<T>::value, void>::type> {
  public:
-  static void serialize(const std::array<T, N>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::array<T, N>& container, B& ob) {
     for (const T& elem : container) {
       Serializer<T, B>::serialize(elem, ob);
     }
   }
 
-  static void parse(std::array<T, N>& container, InputBuffer<B>& ib) {
+  static void parse(std::array<T, N>& container, B& ib) {
     for (size_t i = 0; i < N; i++) {
       Serializer<T, B>::parse(container[i], ib);
     }
@@ -33,12 +33,12 @@ class Serializer<
     B,
     typename std::enable_if<std::is_floating_point<T>::value, void>::type> {
  public:
-  static void serialize(const std::array<T, N>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::array<T, N>& container, B& ob) {
     const char* num_ptr = reinterpret_cast<const char*>(container.data());
     ob.write(num_ptr, N * sizeof(T));
   }
 
-  static void parse(std::array<T, N>& container, InputBuffer<B>& ib) {
+  static void parse(std::array<T, N>& container, B& ib) {
     char* num_ptr = reinterpret_cast<char*>(container.data());
     ib.read(num_ptr, N * sizeof(T));
   }
@@ -47,7 +47,7 @@ class Serializer<
 template <class B, size_t N>
 class Serializer<std::array<bool, N>, B> {
  public:
-  static void serialize(const std::array<bool, N>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::array<bool, N>& container, B& ob) {
     if (N == 0) return;
     char chunk = 0;
     size_t n_chunk_elems = 0;
@@ -68,7 +68,7 @@ class Serializer<std::array<bool, N>, B> {
     }
   }
 
-  static void parse(std::array<bool, N>& container, InputBuffer<B>& ib) {
+  static void parse(std::array<bool, N>& container, B& ib) {
     char chunk = ib.read_char();
     size_t n_chunk_elems = 0;
     for (size_t i = 0; i < N; i++) {

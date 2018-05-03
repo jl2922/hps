@@ -10,14 +10,14 @@ namespace hps {
 template <class T, class B>
 class Serializer<std::set<T>, B> {
  public:
-  static void serialize(const std::set<T>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::set<T>& container, B& ob) {
     Serializer<size_t, B>::serialize(container.size(), ob);
     for (const T& elem : container) {
       Serializer<T, B>::serialize(elem, ob);
     }
   }
 
-  static void parse(std::set<T>& container, InputBuffer<B>& ib) {
+  static void parse(std::set<T>& container, B& ib) {
     size_t n_elems;
     Serializer<size_t, B>::parse(n_elems, ib);
     container.clear();

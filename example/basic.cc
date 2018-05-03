@@ -5,8 +5,8 @@
 int main() {
   std::vector<int> data({22, 333, -4444});
 
-  std::string serialized = hps::serialize_to_string(data);
-  auto parsed = hps::parse_from_string<std::vector<int>>(serialized);
+  std::string serialized = hps::to_string(data);
+  auto parsed = hps::from_string<std::vector<int>>(serialized);
 
   assert(parsed == data);
 

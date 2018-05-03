@@ -139,8 +139,8 @@ TEST(DoubleArrayBenchmarkLargeTest, HPS) {
   auto constructed_time = high_resolution_clock::now();
 
   // Serialize and parse.
-  const std::string serialized = hps::serialize_to_string(origin);
-  auto parsed = hps::parse_from_string<std::vector<double>>(serialized);
+  const std::string serialized = hps::to_string(origin);
+  auto parsed = hps::from_string<std::vector<double>>(serialized);
 
   auto finish_time = high_resolution_clock::now();
 

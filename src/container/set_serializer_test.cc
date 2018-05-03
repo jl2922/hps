@@ -3,17 +3,18 @@
 #include <gtest/gtest.h>
 #include <set>
 #include "../basic_type/basic_type.h"
+#include "../buffer/buffer.h"
 
 TEST(SetSerializerTest, NoElements) {
   std::set<int> input;
   std::stringstream ss;
-  hps::OutputBuffer<hps::Stream> ob(ss);
-  hps::Serializer<std::set<int>, hps::Stream>::serialize(input, ob);
+  hps::StreamOutputBuffer ob(ss);
+  hps::Serializer<std::set<int>, hps::StreamOutputBuffer>::serialize(input, ob);
   ob.flush();
 
-  hps::InputBuffer<hps::Stream> ib(ss);
+  hps::StreamInputBuffer ib(ss);
   std::set<int> output;
-  hps::Serializer<std::set<int>, hps::Stream>::parse(output, ib);
+  hps::Serializer<std::set<int>, hps::StreamInputBuffer>::parse(output, ib);
   EXPECT_THAT(output, testing::IsEmpty());
 }
 
@@ -23,12 +24,12 @@ TEST(SetSerializerTest, FewElements) {
   input.insert(0);
   input.insert(-133);
   std::stringstream ss;
-  hps::OutputBuffer<hps::Stream> ob(ss);
-  hps::Serializer<std::set<int>, hps::Stream>::serialize(input, ob);
+  hps::StreamOutputBuffer ob(ss);
+  hps::Serializer<std::set<int>, hps::StreamOutputBuffer>::serialize(input, ob);
   ob.flush();
 
-  hps::InputBuffer<hps::Stream> ib(ss);
+  hps::StreamInputBuffer ib(ss);
   std::set<int> output;
-  hps::Serializer<std::set<int>, hps::Stream>::parse(output, ib);
+  hps::Serializer<std::set<int>, hps::StreamInputBuffer>::parse(output, ib);
   EXPECT_THAT(output, testing::UnorderedElementsAre(3, 0, -133));
 }
