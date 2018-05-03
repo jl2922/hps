@@ -77,9 +77,9 @@ The following example shows the serialization of a typical quantum system object
 
 class QuantumState {
  public:
-  uint16_t n_elecs;
-  std::unordered_set<uint16_t> orbs_from;
-  std::unordered_set<uint16_t> orbs_to;
+  unsigned n_elecs;
+  std::unordered_set<unsigned> orbs_from;
+  std::unordered_set<unsigned> orbs_to;
 
   template <class B>
   void serialize(B& buf) const {
