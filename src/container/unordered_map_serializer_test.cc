@@ -9,7 +9,8 @@ TEST(UnorderedMapSerializerTest, NoElements) {
   std::unordered_map<std::string, int> input;
   std::stringstream ss;
   hps::StreamOutputBuffer ob(ss);
-  hps::Serializer<std::unordered_map<std::string, int>, hps::StreamOutputBuffer>::serialize(input, ob);
+  hps::Serializer<std::unordered_map<std::string, int>, hps::StreamOutputBuffer>::serialize(
+      input, ob);
   ob.flush();
 
   hps::StreamInputBuffer ib(ss);
@@ -25,7 +26,8 @@ TEST(UnorderedMapSerializerTest, FewElements) {
   input["cc"] = -333;
   std::stringstream ss;
   hps::StreamOutputBuffer ob(ss);
-  hps::Serializer<std::unordered_map<std::string, int>, hps::StreamOutputBuffer>::serialize(input, ob);
+  hps::Serializer<std::unordered_map<std::string, int>, hps::StreamOutputBuffer>::serialize(
+      input, ob);
   ob.flush();
 
   hps::StreamInputBuffer ib(ss);
