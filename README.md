@@ -64,9 +64,8 @@ The bottom of this document contains all the APIs that HPS provides.
 
 We can also extend HPS to support custom types.
 HPS internally uses static polymorphism on the class `Serializer<DataType, BufferType>` to support different types.
-`Serializer<DataType, BufferType>` will call the `serialize` and `parse` method of the corresponding type by default.
-All we need to do is provide the `serialize` and `parse` method or specialize the `Serializer` for the new type, and HPS will support it, together with any combination of this type with STL containers and other specialized types.
-We recommend providing the `serialize` and `parse` method whenever you have control over the structure of the new type.
+`Serializer<DataType, BufferType>` will call the `serialize` and `parse` methods of the corresponding type by default.
+All we need to do is either provide the `serialize` and `parse` methods for the new type or specialize the `Serializer` class, and HPS will support it, together with any combination of this type with STL containers and other specialized types.
 
 The following example shows the serialization of a typical quantum system object consisting of several electrons, some of which are excited from orbitals `orbs_from` to `orbs_to`.
 
