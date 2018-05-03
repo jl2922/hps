@@ -1,5 +1,6 @@
 #include <cassert>
 #include <iostream>
+#include <unordered_set>
 #include "../src/hps.h"
 
 class QuantumState {
@@ -7,24 +8,17 @@ class QuantumState {
   uint16_t n_elecs;
   std::unordered_set<uint16_t> orbs_from;
   std::unordered_set<uint16_t> orbs_to;
-};
 
-namespace hps {
-template <class B>
-class Serializer<QuantumState, B> {
- public:
-  static void serialize(const QuantumState& qs, OutputBuffer<B>& ob) {
-    Serializer<uint16_t, B>::serialize(qs.n_elecs, ob);
-    Serializer<std::unordered_set<uint16_t>, B>::serialize(qs.orbs_from, ob);
-    Serializer<std::unordered_set<uint16_t>, B>::serialize(qs.orbs_to, ob);
+  template <class B>
+  void serialize(B& buf) const {
+    buf << n_elecs << orbs_from << orbs_to;
   }
-  static void parse(QuantumState& qs, InputBuffer<B>& ib) {
-    Serializer<uint16_t, B>::parse(qs.n_elecs, ib);
-    Serializer<std::unordered_set<uint16_t>, B>::parse(qs.orbs_from, ib);
-    Serializer<std::unordered_set<uint16_t>, B>::parse(qs.orbs_to, ib);
+
+  template <class B>
+  void parse(B& buf) {
+    buf >> n_elecs >> orbs_from >> orbs_to;
   }
 };
-}  // namespace hps
 
 int main() {
   QuantumState qs;
@@ -33,7 +27,7 @@ int main() {
   qs.orbs_from.insert({11, 22});
   qs.orbs_to.insert({44, 66});
 
-  std::string serialized = hps::serialize_to_string(qs);
+  std::string serialized = hps::to_string(qs);
 
   std::cout << "size (B): " << serialized.size() << std::endl;
   // size (B): 7

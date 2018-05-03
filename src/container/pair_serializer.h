@@ -10,12 +10,12 @@ namespace hps {
 template <class T1, class T2, class B>
 class Serializer<std::pair<T1, T2>, B> {
  public:
-  static void serialize(const std::pair<T1, T2>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::pair<T1, T2>& container, B& ob) {
     Serializer<T1, B>::serialize(container.first, ob);
     Serializer<T2, B>::serialize(container.second, ob);
   }
 
-  static void parse(std::pair<T1, T2>& container, InputBuffer<B>& ib) {
+  static void parse(std::pair<T1, T2>& container, B& ib) {
     Serializer<T1, B>::parse(container.first, ib);
     Serializer<T2, B>::parse(container.second, ib);
   }

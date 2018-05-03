@@ -174,8 +174,8 @@ TEST(SparseMatrixBenchmarkLargeTest, HPS) {
 
   // Serialize and parse.
   std::string serialized;
-  hps::serialize_to_string(origin, serialized);
-  auto parsed = hps::parse_from_string<SparseMatrix>(serialized);
+  hps::to_string(origin, serialized);
+  auto parsed = hps::from_string<SparseMatrix>(serialized);
 
   auto finish_time = high_resolution_clock::now();
 

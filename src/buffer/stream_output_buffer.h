@@ -2,17 +2,15 @@
 
 #include <cstring>
 #include <iostream>
-#include "output_buffer.h"
-#include "stream.h"
+#include "../serializer.h"
 
 namespace hps {
 
 constexpr size_t STREAM_OUTPUT_BUFFER_SIZE = 1 << 16;
 
-template <>
-class OutputBuffer<Stream> {
+class StreamOutputBuffer {
  public:
-  OutputBuffer(std::ostream& stream) : stream(&stream) { pos = 0; }
+  StreamOutputBuffer(std::ostream& stream) : stream(&stream) { pos = 0; }
 
   void write(const char* content, size_t length) {
     if (pos + length > STREAM_OUTPUT_BUFFER_SIZE) {
@@ -40,6 +38,12 @@ class OutputBuffer<Stream> {
   void flush() {
     stream->write(buffer, pos);
     pos = 0;
+  }
+
+  template <class T>
+  StreamOutputBuffer& operator<<(const T& t) {
+    Serializer<T, StreamOutputBuffer>::serialize(t, *this);
+    return *this;
   }
 
  private:

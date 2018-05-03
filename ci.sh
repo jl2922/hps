@@ -4,14 +4,6 @@ set -x
 export TOOLS_DIR=$TRAVIS_BUILD_DIR/tools
 echo $TOOLS_DIR
 
-# Install Google Test.
-echo "Downloading Google Test"
-wget -O release-1.8.0.tar.gz https://github.com/google/googletest/archive/release-1.8.0.tar.gz
-tar xzf release-1.8.0.tar.gz
-rm release-1.8.0.tar.gz
-mv googletest-release-1.8.0 gtest
-echo "Completed"
-
 # Install or Load Protocol Buffers.
 if [ -f "$TOOLS_DIR/protobuf/bin/protoc" ]; then
   echo "Found cached Protocol Buffers"

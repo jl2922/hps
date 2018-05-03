@@ -2,17 +2,15 @@
 
 #include <cstring>
 #include <iostream>
-#include "input_buffer.h"
-#include "stream.h"
+#include "../serializer.h"
 
 namespace hps {
 
 constexpr size_t STREAM_INPUT_BUFFER_SIZE = 1 << 16;
 
-template <>
-class InputBuffer<Stream> {
+class StreamInputBuffer {
  public:
-  InputBuffer(std::istream& stream) : stream(&stream) {
+  StreamInputBuffer(std::istream& stream) : stream(&stream) {
     stream.seekg(0, stream.beg);
     load();
   }
@@ -40,6 +38,12 @@ class InputBuffer<Stream> {
     const char ch = buffer[pos];
     pos++;
     return ch;
+  }
+
+  template <class T>
+  StreamInputBuffer& operator>>(T& t) {
+    Serializer<T, StreamInputBuffer>::parse(t, *this);
+    return *this;
   }
 
  private:

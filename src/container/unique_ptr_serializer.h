@@ -9,7 +9,7 @@ namespace hps {
 template <class T, class B>
 class Serializer<std::unique_ptr<T>, B> {
  public:
-  static void serialize(const std::unique_ptr<T>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::unique_ptr<T>& container, B& ob) {
     if (container) {
       ob.write_char(1);
       Serializer<T, B>::serialize(*container, ob);
@@ -18,7 +18,7 @@ class Serializer<std::unique_ptr<T>, B> {
     }
   }
 
-  static void parse(std::unique_ptr<T>& container, InputBuffer<B>& ib) {
+  static void parse(std::unique_ptr<T>& container, B& ib) {
     if (ib.read_char()) {
       if (!container) {
         container.reset(new T());

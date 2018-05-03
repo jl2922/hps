@@ -1,14 +1,13 @@
 #pragma once
 
 #include <string>
-#include "input_buffer.h"
+#include "../serializer.h"
 
 namespace hps {
 
-template <>
-class InputBuffer<std::string> {
+class StringInputBuffer {
  public:
-  InputBuffer(const std::string& str) : str(&str) { pos = 0; }
+  StringInputBuffer(const std::string& str) : str(&str) { pos = 0; }
 
   void read(char* content, size_t length) {
     str->copy(content, length, pos);
@@ -19,6 +18,12 @@ class InputBuffer<std::string> {
     const char ch = (*str)[pos];
     pos++;
     return ch;
+  }
+
+  template <class T>
+  StringInputBuffer& operator>>(T& t) {
+    Serializer<T, StringInputBuffer>::parse(t, *this);
+    return *this;
   }
 
  private:

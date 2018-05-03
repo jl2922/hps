@@ -1,14 +1,13 @@
 #pragma once
 
 #include <cstring>
-#include "input_buffer.h"
+#include "../serializer.h"
 
 namespace hps {
 
-template <>
-class InputBuffer<char*> {
+class CharArrayInputBuffer {
  public:
-  InputBuffer(const char* arr) : arr(arr) { pos = 0; }
+  CharArrayInputBuffer(const char* arr) : arr(arr) { pos = 0; }
 
   void read(char* content, size_t length) {
     strncpy(content, &arr[pos], length);
@@ -19,6 +18,12 @@ class InputBuffer<char*> {
     const char ch = arr[pos];
     pos++;
     return ch;
+  }
+
+  template <class T>
+  CharArrayInputBuffer& operator>>(T& t) {
+    Serializer<T, CharArrayInputBuffer>::parse(t, *this);
+    return *this;
   }
 
  private:

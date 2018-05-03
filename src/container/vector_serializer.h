@@ -18,14 +18,14 @@ class Serializer<
     typename std::
         enable_if<!std::is_floating_point<T>::value && !hps::is_unique_ptr<T>::value, void>::type> {
  public:
-  static void serialize(const std::vector<T>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::vector<T>& container, B& ob) {
     Serializer<size_t, B>::serialize(container.size(), ob);
     for (const T& elem : container) {
       Serializer<T, B>::serialize(elem, ob);
     }
   }
 
-  static void parse(std::vector<T>& container, InputBuffer<B>& ib) {
+  static void parse(std::vector<T>& container, B& ib) {
     size_t n_elems;
     Serializer<size_t, B>::parse(n_elems, ib);
     container.resize(n_elems);
@@ -41,14 +41,14 @@ class Serializer<
     B,
     typename std::enable_if<std::is_floating_point<T>::value, void>::type> {
  public:
-  static void serialize(const std::vector<T>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::vector<T>& container, B& ob) {
     const size_t n_elems = container.size();
     Serializer<size_t, B>::serialize(n_elems, ob);
     const char* num_ptr = reinterpret_cast<const char*>(container.data());
     ob.write(num_ptr, n_elems * sizeof(T));
   }
 
-  static void parse(std::vector<T>& container, InputBuffer<B>& ib) {
+  static void parse(std::vector<T>& container, B& ib) {
     size_t n_elems;
     Serializer<size_t, B>::parse(n_elems, ib);
     container.resize(n_elems);
@@ -60,7 +60,7 @@ class Serializer<
 template <class B>
 class Serializer<std::vector<bool>, B> {
  public:
-  static void serialize(const std::vector<bool>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::vector<bool>& container, B& ob) {
     const size_t n_elems = container.size();
     Serializer<size_t, B>::serialize(n_elems, ob);
     char chunk = 0;
@@ -82,7 +82,7 @@ class Serializer<std::vector<bool>, B> {
     }
   }
 
-  static void parse(std::vector<bool>& container, InputBuffer<B>& ib) {
+  static void parse(std::vector<bool>& container, B& ib) {
     size_t n_elems;
     Serializer<size_t, B>::parse(n_elems, ib);
     container.resize(n_elems);
@@ -102,7 +102,7 @@ class Serializer<std::vector<bool>, B> {
 template <class T, class B>
 class Serializer<std::vector<std::unique_ptr<T>>, B> {
  public:
-  static void serialize(const std::vector<std::unique_ptr<T>>& container, OutputBuffer<B>& ob) {
+  static void serialize(const std::vector<std::unique_ptr<T>>& container, B& ob) {
     const size_t n_elems = container.size();
     std::vector<bool> exist(n_elems, false);
     for (size_t i = 0; i < n_elems; i++) {
@@ -116,7 +116,7 @@ class Serializer<std::vector<std::unique_ptr<T>>, B> {
     }
   }
 
-  static void parse(std::vector<std::unique_ptr<T>>& container, InputBuffer<B>& ib) {
+  static void parse(std::vector<std::unique_ptr<T>>& container, B& ib) {
     std::vector<bool> exist;
     Serializer<std::vector<bool>, B>::parse(exist, ib);
     const size_t n_elems = exist.size();
