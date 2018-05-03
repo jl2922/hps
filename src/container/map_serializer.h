@@ -24,11 +24,9 @@ class Serializer<std::map<K, V>, B> {
     Serializer<size_t, B>::parse(n_elems, ib);
     container.clear();
     K key;
-    V value;
     for (size_t i = 0; i < n_elems; i++) {
       Serializer<K, B>::parse(key, ib);
-      Serializer<V, B>::parse(value, ib);
-      container[std::move(key)] = std::move(value);
+      Serializer<V, B>::parse(container[std::move(key)], ib);
     }
   }
 };
