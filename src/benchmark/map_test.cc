@@ -11,7 +11,7 @@
 #include "capnproto_benchmark.capnp.h"
 #include "protobuf_benchmark.pb.h"
 
-constexpr static unsigned long long N_ENTRIES = 1 << 24;
+constexpr static unsigned long long N_ENTRIES = 1 << 23;
 
 TEST(MapBenchmarkLargeTest, Warmup) {
   std::unordered_map<std::string, double> origin;
