@@ -25,7 +25,7 @@ Simply include the `hps.h` file, which includes all the other headers.
 
 ## Benchmark
 
-The performance of HPS compared to other well-known C++ serializers for some most common data structures are as follows:
+The performance of HPS compared to other well-known C++ serializers for some most common data structures are as follows: (less is better)
 
 ![Serialize and Parse Time](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/time.png)
 
