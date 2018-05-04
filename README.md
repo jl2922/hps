@@ -32,7 +32,7 @@ The performance of HPS comparing to other well-known C++ serializers for some mo
 ![Serialized Message Size](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/size.png)
 
 The test codes are in the [benchmark](https://github.com/jl2922/hps/tree/master/src/benchmark) directory.
-You can follow the continuous integration script [ci.sh](https://github.com/jl2922/hps/tree/master/src/ci.sh) to install the libraries and reproduce these results.
+You can follow the continuous integration script in [ci.sh](https://github.com/jl2922/hps/tree/master/ci.sh) to install the libraries and reproduce these results.
 
 The sparse matrix is stored as a list of rows, each of which contains a list of 64-bit integers for the column indices and a list of doubles for the values.
 The hash map is a map from strings to doubles.
