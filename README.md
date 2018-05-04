@@ -15,7 +15,7 @@ Check the benchmarks below for details.
 
 In addition, it requires the least amount of human efforts to use.
 There is **no need for a separate schema file or special data structures**, HPS works with STL containers and user-defined types directly.
-This design reduces the cognitive efforts and makes the binding of data and methods more cohesive.
+This design reduces the cognitive efforts for programmers and makes the binding of data and methods more cohesive.
 
 ## Installation
 
