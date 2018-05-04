@@ -14,12 +14,12 @@ For example, comparing to Boost Serialization, HPS is up to 250% faster and uses
 Check the benchmarks below for details.
 
 In addition, it requires the least amount of human efforts to use.
-There is **no need for separate schema files or special data structures**, HPS works with STL containers and user-defined types directly, just like Boost, but much faster.
-This design also makes the binding of data and methods more cohesive.
+There is **no need for separate schema files or special data structures**, HPS works with STL containers and user-defined types directly.
+This design reduces the cognitive efforts and makes the binding of data and methods more cohesive.
 
 ## Installation
 
-Not needed.
+Not needed!
 HPS is a header-only library.
 Simply include the `hps.h` file, which includes all the other headers.
 
@@ -27,17 +27,16 @@ Simply include the `hps.h` file, which includes all the other headers.
 
 The performance of HPS comparing to other well-known C++ serializers for some most common data structures are as follows:
 
-Note:
+![Serialize and Parse Time](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/time.png)
+
+![Serialized Message Size](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/size.png)
+
 The test codes are in the [benchmark](https://github.com/jl2922/hps/tree/master/src/benchmark) directory.
-You can follow the continuous integration code [ci.sh](https://github.com/jl2922/hps/tree/master/src/ci.sh) to install the libraries and reproduce these results.
+You can follow the continuous integration script [ci.sh](https://github.com/jl2922/hps/tree/master/src/ci.sh) to install the libraries and reproduce these results.
 
 The sparse matrix is stored as a list of rows, each of which contains a list of 64-bit integers for the column indices and a list of doubles for the values.
 The hash map is a map from strings to doubles.
 Both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types at this time.
-
-![Serialize and Parse Time](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/time.png)
-
-![Serialized Message Size](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/size.png)
 
 In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of source lines of code for these test cases:
 
@@ -48,7 +47,7 @@ In addition to the traditional benchmarks for computational cost, we also provid
 | **boost** | 13 | 20 | 13 | 13 |
 | **hps** | 7 | 16 | 7 | 2 |
 
-Note: fixed cost includes the estimated amount of lines of commands needed for a proficient user to install the library, set the environment variables, extra lines of code needed in the Makefile, and various includes, etc.
+Note: fixed cost includes the estimated amount of lines of commands needed for an experienced user to install the library, set the environment variables, extra lines of code needed in the Makefile, and various includes, etc.
 
 ## Usage
 
