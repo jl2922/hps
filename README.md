@@ -132,7 +132,6 @@ int main() {
 ```
 
 For examples on extending HPS by specializing the `Serializer` class, you can check our source code for primitive types and STL containers, such as [float_serializer.h](https://github.com/jl2922/hps/blob/master/src/basic_type/float_serializer.h), where we specialize the `Serializer` for all the floating point numbers (using `SFINAE`).
-Note that specializing the `Serializer` class is the only choice if you do not have control over the new type.
 
 ## Encoding Scheme
 
