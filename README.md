@@ -38,7 +38,7 @@ The sparse matrix is stored as a list of rows, each of which contains a list of 
 The hash map is a map from strings to doubles.
 Both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type and CapnProto does not support hash map or similar types.
 
-In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of source lines of code for these test cases:
+In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of source lines of code for these test cases: (less is better)
 
 | SLOC | double array | sparse matrix | hash map | fixed cost |
 | --- | :---: | :---: | :---: | :---: |
