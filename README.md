@@ -7,21 +7,48 @@ A C++11 High Performance Serialization Library.
 ## Overview
 
 HPS is a high performance header-only C++11 library for data serialization.
-It is designed for high performance computing where we need to efficiently serialize highly structured data or objects to a sufficiently small and flat structure and pass them over the network, write them to the file system, or simply to compress them to reduce the memory consumption.
+It can encode structured data or objects into flat structures efficiently, so that we can pass them over the network or write them to the file system faster, or store them more compactly in the memory.
 
-It has the **state of the art performance** regarding both the speed and the size of the serialized messages.
-Check the benchmarks below.
+It has the **state of the art performance** and beats all the well-known serialization libraries.
+For example, comparing to Boost Serialization, HPS is up to 250% faster and uses up to 35% less bytes for several common data structures.
+Check the benchmarks below for details.
 
-In addition, it requires the least amount of human efforts to use for common data structures in high performance computing, such as arrays, matrices, maps, etc.
-There is **no need for separate schema files or special data structures**, HPS works with STL containers and user-defined types directly, just like Boost but much faster.
-This design makes the binding of data and their methods more natural and cohesive and gives better performance / data encapsulation on generic libraries and static polymorphism classes.
-
-Note: HPS requires manual handling of data backward compatibility issues.
+In addition, it requires the least amount of human efforts to use.
+There is **no need for separate schema files or special data structures**, HPS works with STL containers and user-defined types directly, just like Boost, but much faster.
+This design also makes the binding of data and methods more cohesive.
 
 ## Installation
 
+Not needed.
 HPS is a header-only library.
 Simply include the `hps.h` file, which includes all the other headers.
+
+## Benchmark
+
+The performance of HPS comparing to other well-known C++ serializers for some most common data structures are as follows:
+
+Note:
+The test codes are in the [benchmark](https://github.com/jl2922/hps/tree/master/src/benchmark) directory.
+You can follow the continuous integration code [ci.sh](https://github.com/jl2922/hps/tree/master/src/ci.sh) to install the libraries and reproduce these results.
+
+The sparse matrix is stored as a list of rows, each of which contains a list of 64-bit integers for the column indices and a list of doubles for the values.
+The hash map is a map from strings to doubles.
+Both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types at this time.
+
+![Serialize and Parse Time](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/time.png)
+
+![Serialized Message Size](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/size.png)
+
+In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of source lines of code for these test cases:
+
+| SLOC | double array | sparse matrix | hash map | fixed cost |
+| --- | :---: | :---: | :---: | :---: |
+| **protobuf** | 12 | 23 | 12 | 17 |
+| **capnproto** | 15 | 25 | - | 21 |
+| **boost** | 13 | 20 | 13 | 13 |
+| **hps** | 7 | 16 | 7 | 2 |
+
+Note: fixed cost includes the estimated amount of lines of commands needed for a proficient user to install the library, set the environment variables, extra lines of code needed in the Makefile, and various includes, etc.
 
 ## Usage
 
@@ -48,10 +75,7 @@ int main() {
 }
 // Compile with C++11 or above.
 ```
-Then we can send the string over the network in MPI for example
-```c++
-MPI_Send(serialized.c_str(), serialized.size(), MPI_CHAR, 0, 0, MPI_COMM_WORLD);
-```
+
 There are also the `to_stream` and `from_stream` functions for writing the data to or reading it from file streams.
 For example
 ```c++
@@ -124,30 +148,6 @@ Another difference is in the handling of the integral types.
 There are no specific types for signed integers like the `sint32` or `sint64` in protobuf and the **zigzag varint encoding will be used on standard int types**, i.e. `int`, `long long`, etc.
 And before serialization, we can use smaller integral types such as `int16_t` to store the data more compactly in memory constrained environments, instead of at least `int32` as in protobuf.
 
-## Benchmark
-
-The performance of HPS comparing to other well-known C++ serializers for some most common data structures in high performance computing are as follows:
-
-Note:
-The sparse matrix is stored as a list of rows, each of which contains a list of 64-bit integers for the column indices and a list of doubles for the values.
-The hash map is a map from strings to doubles.
-Both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types at this time.
-The test codes are in the [benchmark](https://github.com/jl2922/hps/tree/master/src/benchmark) directory.
-
-![Serialize and Parse Time](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/time.png)
-
-![Serialized Message Size](https://raw.githubusercontent.com/jl2922/hps/master/src/benchmark/size.png)
-
-In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of source lines of code for these test cases:
-
-| SLOC | double array | sparse matrix | hash map | fixed cost |
-| --- | :---: | :---: | :---: | :---: |
-| **protobuf** | 12 | 23 | 12 | 17 |
-| **capnproto** | 15 | 25 | - | 21 |
-| **boost** | 13 | 20 | 13 | 13 |
-| **hps** | 7 | 16 | 7 | 2 |
-
-Note: fixed cost includes the estimated amount of lines of commands needed for a proficient user to install the library, set the environment variables, extra lines of code needed in the Makefile, and various includes, etc.
 
 ## API Reference
 
