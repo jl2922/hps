@@ -138,9 +138,8 @@ For examples on extending HPS by specializing the `Serializer` class, you can ch
 The encoding scheme of HPS is very similar to Google's protobuf.
 Google provides an [extremely detailed exlanation](https://developers.google.com/protocol-buffers/docs/encoding) on that.
 
-The major difference between protobuf's encoding scheme and HPS' is that the **field numbers or wire types are not stored**.
-Messages are always serialized and parsed in the same order.
-This gives HPS a significant advantage in both the speed and the size of the serialized messages over protobuf on data with small nested structures.
+The major difference between protobuf's encoding scheme and HPS' is that **HPS does not store field numbers or wire types**.
+This gives HPS a significant advantage in both the speed and the size of the serialized messages over protobuf, especially when there are many fields and nested structures.
 
 ## API Reference
 
