@@ -90,7 +90,7 @@ HPS internally uses static polymorphism on the class `Serializer<DataType, Buffe
 `Serializer<DataType, BufferType>` will call the `serialize` and `parse` methods of the corresponding type by default.
 All we need to do is either provide the `serialize` and `parse` methods for the new type or specialize the `Serializer` class, and HPS will support it, together with any combination of this type with STL containers and other specialized types.
 
-The following example shows the serialization of a typical quantum system object consisting of several electrons, some of which are excited from orbitals `orbs_from` to `orbs_to`.
+The following example shows the serialization of a custom quantum system object by providing its `serialize` and `parse` methods.
 
 ```c++
 #include <cassert>
@@ -131,9 +131,8 @@ int main() {
 // Compile with C++11 or above.
 ```
 
-If needed, we can also leverage `SFINAE` to support multiple types with the same piece of code.
-HPS makes extensive use of that internally.
-See [float_serializer.h](https://github.com/jl2922/hps/blob/master/src/basic_type/float_serializer.h) for example.
+For examples on extending HPS by specializing the `Serializer` class, you can check our source code for primitive types and STL containers, such as [float_serializer.h](https://github.com/jl2922/hps/blob/master/src/basic_type/float_serializer.h), where we specialize the `Serializer` for all the floating point numbers (using `SFINAE`).
+Note that specializing the `Serializer` class is the only choice if you do not have control over the new type.
 
 ## Encoding Scheme
 
