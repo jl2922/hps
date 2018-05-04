@@ -14,7 +14,7 @@ For example, comparing to Boost Serialization, HPS is up to 250% faster and uses
 Check the benchmarks below for details.
 
 In addition, it requires the least amount of human efforts to use.
-There is **no need for separate schema files or special data structures**, HPS works with STL containers and user-defined types directly.
+There is **no need for a separate schema file or special data structures**, HPS works with STL containers and user-defined types directly.
 This design reduces the cognitive efforts and makes the binding of data and methods more cohesive.
 
 ## Installation
