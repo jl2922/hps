@@ -202,4 +202,4 @@ This is best suitable for cases where fields are missing less often.
 Note that there is no need to deal with bit operations manually.
 An STL `vector<bool>` will use a compact format automatically.
 
-And for cases where most of the fields are present, the reverse of protobuf's scheme may be the best choice, i.e., use a vector to store the indices of the missing fields.
+And for cases where most of the fields are present, the reverse of protobuf's scheme will be the best choice, i.e., use a vector to store the indices of the missing fields.
