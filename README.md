@@ -191,15 +191,15 @@ HPS supports the following types and any combinations of them out of the box:
 
 ## Tips for Heterogeneous Data
 
-Heterogeneous data here refer messages that contain data structures that occur repeatedly and have some fields in them missing irregularly in different instances of the structure.
+Heterogeneous data here refers to messages that contain data structures that occur repeatedly but have some fields missing irregularly.
 
 There is no panacea for achieving the best performance for this type of data in all cases.
 
-Protobuf uses an additional integer to indicate the existence of each field, which is best suitable for cases where there are lots of fields and most of them are missing.
+Protobuf uses an additional integer to indicate the existence of each field, which is best suitable for cases where there are lots of missing fields.
 
 Another possible encoding scheme is bit representation, i.e., use a bit vector to indicate the existence of the fields.
-This is best suitable for cases where there are not many fields and fields are missing less often.
-There is no need to deal with bit operations directly.
-An STL `vector<bool>` will use a compact format automatically, i.e., eight booleans in a byte, and same for the HPS serialized version.
+This is best suitable for cases where fields are missing less often.
+Note that there is no need to deal with bit operations manually.
+An STL `vector<bool>` will use a compact format automatically.
 
-And for cases where most of the fields seldom have missing values, the reverse of protobuf's scheme may be the best choice, i.e., use a vector to store the indices of the missing fields.
+And for cases where most of the fields are present, the reverse of protobuf's scheme may be the best choice, i.e., use a vector to store the indices of the missing fields.
