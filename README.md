@@ -36,7 +36,7 @@ You can follow the continuous integration script in [ci.sh](https://github.com/j
 
 The sparse matrix is stored as a list of rows, each of which contains a list of 64-bit integers for the column indices and a list of doubles for the values.
 The hash map is a map from strings to doubles.
-Both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type which may not be a hash map, and CapnProto does not support hash map or similar types at this time.
+Both HPS and Boost can serialize `std::unordered_map` directly, ProtoBuf uses its own Map type and CapnProto does not support hash map or similar types.
 
 In addition to the traditional benchmarks for computational cost, we also provide the human efforts cost in terms of source lines of code for these test cases:
 
