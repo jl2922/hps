@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JL2922_HPS_FLOAT_SERIALIZER_H
+#define JL2922_HPS_FLOAT_SERIALIZER_H
 
 #include <iostream>
 #include <type_traits>
@@ -21,3 +22,4 @@ class Serializer<T, B, typename std::enable_if<std::is_floating_point<T>::value,
 };
 
 }  // namespace hps
+#endif

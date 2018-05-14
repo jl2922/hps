@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JL2922_HPS_UINT_SERIALIZER_H
+#define JL2922_HPS_UINT_SERIALIZER_H
 
 #include <cassert>
 #include <iostream>
@@ -48,3 +49,4 @@ class Serializer<T, B, typename std::enable_if<std::is_unsigned<T>::value, void>
 };
 
 }  // namespace hps
+#endif

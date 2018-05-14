@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JL2922_HPS_INT_SERIALIZER_H
+#define JL2922_HPS_INT_SERIALIZER_H
 
 #include <iostream>
 #include <type_traits>
@@ -30,3 +31,4 @@ class Serializer<
 };
 
 }  // namespace hps
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JL2922_HPS_ARRAY_SERIALIZER_H
+#define JL2922_HPS_ARRAY_SERIALIZER_H
 
 #include <array>
 #include <iostream>
@@ -83,3 +84,4 @@ class Serializer<std::array<bool, N>, B> {
 };
 
 }  // namespace hps
+#endif
