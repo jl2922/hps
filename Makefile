@@ -16,6 +16,7 @@ endif
 # Sources and intermediate objects.
 TESTS := $(shell find $(SRC_DIR) -name "*_test.cc" -not -path "$(SRC_DIR)/benchmark/*")
 HEADERS := $(shell find $(SRC_DIR) -name "*.h")
+COMPILED_HEADERS := $(HEADERS:%.h=%.h.gch)
 OBJS := $(SRCS:$(SRC_DIR)/%.cc=$(BUILD_DIR)/%.o)
 TEST_OBJS := $(TESTS:$(SRC_DIR)/%.cc=$(BUILD_DIR)/%.o)
 
@@ -52,7 +53,7 @@ clean:
 $(TEST_EXE): $(TEST_OBJS) $(OBJS) $(TEST_LIB)
 	$(CXX) $(TEST_CXXFLAGS) $(TEST_OBJS) $(OBJS) $(TEST_MAIN_SRC) $(TEST_LIB) -o $(TEST_EXE) $(LDLIBS)
 
-$(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(HEADERS)
+$(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(COMPILED_HEADERS)
 	mkdir -p $(@D) && $(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/gtest-all.o: $(GTEST_ALL_SRC)
@@ -64,5 +65,8 @@ $(BUILD_DIR)/gmock-all.o: $(GMOCK_ALL_SRC)
 $(TEST_LIB): $(BUILD_DIR)/gtest-all.o $(BUILD_DIR)/gmock-all.o
 	$(AR) $(ARFLAGS) $@ $(BUILD_DIR)/gtest-all.o $(BUILD_DIR)/gmock-all.o
 
-$(TEST_OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(HEADERS)
+$(TEST_OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(COMPILED_HEADERS)
 	mkdir -p $(@D) && $(CXX) $(TEST_CXXFLAGS) -c $< -o $@
+
+$(COMPILED_HEADERS): %.h.gch: %.h
+	$(CXX) $(TEST_CXXFLAGS) $<

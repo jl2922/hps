@@ -5,6 +5,7 @@ build/
 local.mk
 *.pb.*
 *.capnp.*
+*.h.gch
 
 # OS and editor files.
 .vscode/
