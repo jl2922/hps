@@ -37,6 +37,7 @@ T from_stream(std::istream& stream) {
 // Recommended for repeated use inside a loop.
 template <class T>
 void to_string(const T& t, std::string& str) {
+  str.clear();
   StringOutputBuffer ob(str);
   ob << t;
   ob.flush();
