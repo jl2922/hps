@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JL2922_HPS_HPS_H
+#define JL2922_HPS_HPS_H
 
 #include <iostream>
 #include <sstream>
@@ -84,3 +85,4 @@ T from_char_array(const char* arr) {
 }
 
 }  // namespace hps
+#endif

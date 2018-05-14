@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JL2922_HPS_UNORDERED_SET_SERIALIZER_H
+#define JL2922_HPS_UNORDERED_SET_SERIALIZER_H
 
 #include <iostream>
 #include <unordered_set>
@@ -31,3 +32,4 @@ class Serializer<std::unordered_set<T>, B> {
 };
 
 }  // namespace hps
+#endif

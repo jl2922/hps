@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JL2922_HPS_LIST_SERIALIZER_H
+#define JL2922_HPS_LIST_SERIALIZER_H
 
 #include <iostream>
 #include <list>
@@ -31,3 +32,4 @@ class Serializer<std::list<T>, B> {
 };
 
 }  // namespace hps
+#endif

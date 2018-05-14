@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JL2922_HPS_UNIQUE_PTR_SERIALIZER_H
+#define JL2922_HPS_UNIQUE_PTR_SERIALIZER_H
 
 #include <iostream>
 #include <memory>
@@ -31,3 +32,4 @@ class Serializer<std::unique_ptr<T>, B> {
 };
 
 }  // namespace hps
+#endif
