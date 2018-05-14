@@ -1,5 +1,4 @@
-#ifndef JL2922_HPS_PAIR_SERIALIZER_H
-#define JL2922_HPS_PAIR_SERIALIZER_H
+#pragma once
 
 #include <iostream>
 #include <utility>
@@ -23,4 +22,3 @@ class Serializer<std::pair<T1, T2>, B> {
 };
 
 }  // namespace hps
-#endif

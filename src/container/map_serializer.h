@@ -1,5 +1,4 @@
-#ifndef JL2922_HPS_MAP_SERIALIZER_H
-#define JL2922_HPS_MAP_SERIALIZER_H
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -33,4 +32,3 @@ class Serializer<std::map<K, V>, B> {
 };
 
 }  // namespace hps
-#endif

@@ -1,5 +1,4 @@
-#ifndef JL2922_HPS_CONTAINER_H
-#define JL2922_HPS_CONTAINER_H
+#pragma once
 
 #include "array_serializer.h"
 #include "deque_serializer.h"
@@ -10,4 +9,3 @@
 #include "unordered_map_serializer.h"
 #include "unordered_set_serializer.h"
 #include "vector_serializer.h"
-#endif

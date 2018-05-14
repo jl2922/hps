@@ -1,9 +1,7 @@
-#ifndef JL2922_HPS_STRING_OUTPUT_BUFFER_H
-#define JL2922_HPS_STRING_OUTPUT_BUFFER_H
+#pragma once
 
 #include <string>
 #include "../serializer.h"
-#include <cstring>
 
 namespace hps {
 
@@ -61,4 +59,3 @@ class StringOutputBuffer {
 };
 
 }  // namespace hps
-#endif

@@ -1,5 +1,4 @@
-#ifndef JL2922_HPS_STREAM_INPUT_BUFFER_H
-#define JL2922_HPS_STREAM_INPUT_BUFFER_H
+#pragma once
 
 #include <cstring>
 #include <iostream>
@@ -66,4 +65,3 @@ class StreamInputBuffer {
 };
 
 }  // namespace hps
-#endif

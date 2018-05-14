@@ -1,5 +1,4 @@
-#ifndef JL2922_HPS_UNORDERED_MAP_SERIALIZER_H
-#define JL2922_HPS_UNORDERED_MAP_SERIALIZER_H
+#pragma once
 
 #include <iostream>
 #include <unordered_map>
@@ -36,4 +35,3 @@ class Serializer<std::unordered_map<K, V>, B> {
 };
 
 }  // namespace hps
-#endif
