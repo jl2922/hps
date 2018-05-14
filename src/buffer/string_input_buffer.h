@@ -1,5 +1,4 @@
-#ifndef JL2922_HPS_STRING_INPUT_BUFFER_H
-#define JL2922_HPS_STRING_INPUT_BUFFER_H
+#pragma once
 
 #include <string>
 #include "../serializer.h"
@@ -34,4 +33,3 @@ class StringInputBuffer {
 };
 
 }  // namespace hps
-#endif

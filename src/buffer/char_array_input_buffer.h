@@ -1,5 +1,4 @@
-#ifndef JL2922_HPS_CHAR_ARRAY_INPUT_BUFFER_H
-#define JL2922_HPS_CHAR_ARRAY_INPUT_BUFFER_H
+#pragma once
 
 #include <cstring>
 #include "../serializer.h"
@@ -34,4 +33,3 @@ class CharArrayInputBuffer {
 };
 
 }  // namespace hps
-#endif

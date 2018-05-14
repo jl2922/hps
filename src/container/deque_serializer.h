@@ -1,5 +1,4 @@
-#ifndef JL2922_HPS_DEQUE_SERIALIZER_H
-#define JL2922_HPS_DEQUE_SERIALIZER_H
+#pragma once
 
 #include <deque>
 #include <iostream>
@@ -32,4 +31,3 @@ class Serializer<std::deque<T>, B> {
 };
 
 }  // namespace hps
-#endif
