@@ -5,7 +5,6 @@ A C++11 High Performance Serialization Library.
 [![Build Status](https://travis-ci.org/jl2922/hps.svg?branch=master&style=flat)](https://travis-ci.org/jl2922/hps)
 
 ## Overview
-
 HPS is a high performance header-only C++11 library for data serialization.
 It can encode structured data or objects into a flat and compressed format efficiently, so that we can pass them over the network or write them to the file system faster, or store them more compactly in the memory.
 
@@ -16,6 +15,16 @@ Check the benchmarks below for details.
 In addition, it requires the least amount of human efforts to use.
 There is **no need for a separate schema file or special data structures**, HPS works with STL containers and user-defined types directly.
 This design reduces the cognitive efforts for programmers and makes the binding of data and methods more cohesive.
+
+## Citation
+```
+@article{li2018hps,
+  title={HPS: A C++ 11 High Performance Serialization Library},
+  author={Li, Junhao},
+  journal={arXiv preprint arXiv:1811.04556},
+  year={2018}
+}
+```
 
 ## Installation
 
