@@ -13,7 +13,7 @@ For example, compared to Boost Serialization, HPS is up to 150% faster and uses 
 Check the benchmarks below for details.
 
 In addition, it requires the least amount of human efforts to use.
-There is **no need for a separate schema file or special data structures**, HPS works with STL containers and user-defined types directly.
+There is **no need for making a separate schema file or using special data structures**, HPS works with STL containers and user-defined types directly.
 This design makes the binding of data and serialization methods more cohesive and can often give a much cleaner design, especially when there is composition or inheritance between classes.
 
 HPS is being actively used in a quantum chemistry package (developed by the Cyrus Group at Cornell University LASSP Lab) and has successfully and efficiently serialized/parsed **petabytes** of scientific data.
