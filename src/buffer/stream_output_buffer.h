@@ -46,6 +46,10 @@ class StreamOutputBuffer {
     Serializer<T, StreamOutputBuffer>::serialize(t, *this);
     return *this;
   }
+  
+  inline size_t tellp() const {
+      return (size_t)stream->tellp();
+  }
 
  private:
   std::ostream* const stream;
