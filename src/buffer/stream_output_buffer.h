@@ -48,7 +48,7 @@ class StreamOutputBuffer {
   }
   
   inline size_t tellp() const {
-      return (size_t)stream->tellp();
+      return (size_t)stream->tellp() + pos;
   }
 
  private:
