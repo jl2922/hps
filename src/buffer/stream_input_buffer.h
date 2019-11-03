@@ -46,6 +46,11 @@ class StreamInputBuffer {
     Serializer<T, StreamInputBuffer>::parse(t, *this);
     return *this;
   }
+  
+  //usefull to debug and profile the file size
+  inline size_t tellg() const {
+      return (size_t)stream->tellg() - (size_t)STREAM_INPUT_BUFFER_SIZE + (size_t)pos;
+  }
 
  private:
   std::istream* const stream;
